@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 09:29:19 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/15 13:28:55 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/15 14:59:28 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,31 @@
 # include <grp.h>
 # include <time.h>
 
-void	b_ls(const char *dirname);
+enum	e_sort_flags
+{
+	SORT = 0x0,
+	SORT_NAME = 0x1,
+	SORT_TIME = 0x2,
+	SORT_REV = 0x4,
+};
+
+struct	s_opts
+{
+	unsigned int	sort;
+	unsigned int	l;
+	unsigned int	all;
+	unsigned int	recursive;
+};
+
+struct	s_file
+{
+	const char	*name;
+	time_t		timestamp;
+};
+
+int				error(const char *filename);
+struct s_opts	*get_opts(int ac, const char **av);
+const char		*render(struct s_opts *opts, struct stat *s);
+int				b_ls(struct s_opts *opts, const char *filename);
 
 #endif
