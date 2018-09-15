@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 09:29:19 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/15 11:38:02 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/15 13:28:55 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 # include <string.h>
 # include <limits.h>
 # include <sys/stat.h>
+# include <pwd.h>
+# include <grp.h>
+# include <time.h>
 
 void	b_ls(const char *dirname);
 
