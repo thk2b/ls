@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 14:56:41 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 13:41:14 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 15:08:30 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,15 +64,23 @@ int			b_ls(struct s_opts *opts, const char *filename)
 	struct stat		st;
 	t_btree			*root;
 
-	g_cmp = opts->sort & SORT_NAME ? cmp_name : cmp_time;
+	g_cmp = opts->sort == SORT_TIME ? cmp_time : cmp_name;
 	if((dir = opendir(filename)) == NULL)
 		return (error(filename));
 	while ((ent = readdir(dir)))
 	{
 		if((file = file_new()) == NULL)
 			return (1);
+		if (ent->d_name[0] == '.' && opts->all == 0)
+		{
+			free (file);
+			continue ;
+		}
 		if (stat(path_join(path, filename, ent->d_name), &st) == -1)
-			return (1);
+		{
+			error(ent->d_name);
+			continue ;
+		};
 		file->name = ent->d_name;
 		file->repr = NULL;
 		file->timestamp = st.st_mtime;
@@ -80,7 +88,7 @@ int			b_ls(struct s_opts *opts, const char *filename)
 			file->repr = render(file, &st);
 		btree_add(&root, (void*)file, g_cmp);
 	}
-	if (opts->sort & SORT_REV)
+	if (opts->rev)
 		btree_in_back_order(root, print_file);
 	else
 		btree_in_order(root, print_file);

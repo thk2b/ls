@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 15:03:57 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 13:40:44 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 14:05:53 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static char *get_time(struct stat *s)
 	char	*str;
 	if ((str = ctime(&s->st_mtime)) == NULL)
 		return (NULL);
-	return (ft_strdup(ft_strsub(str, 4, ft_strlen(str) - 13)));
+	return (ft_strdup(ft_strsub(str, 4, ft_strlen(str) - 5)));
 }
 
 char *strv_join(char **strv, const char *sep)
