@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 14:56:41 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/15 21:28:20 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/15 21:49:39 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static void	print_file(void *vfile)
 {
 	struct s_file *file;
 	file = (struct s_file*)vfile;
-	printf("%s\n", file->repr ? file->repr : file->name);
+	printf("%s\n", file->name);
 	free(vfile);
 }
 
@@ -82,5 +82,6 @@ int			b_ls(struct s_opts *opts, const char *filename)
 	else
 		btree_in_order(root, print_file);
 	btree_free(root);
+	closedir(dir);
 	return (0);
 }
