@@ -1,6 +1,9 @@
 NAME = b_ls
 
 SRC = b_ls.c\
+	btree.c\
+	error.c\
+	get_opts.c\
 	main.c
 
 OBJ = $(SRC:.c=.o)

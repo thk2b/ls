@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 19:13:07 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/15 20:03:01 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/15 20:39:25 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,15 @@ void	btree_in_back_order(t_btree *root, void (*f)(void*))
 	btree_in_back_order(root->left, f);
 }
 
+void	btree_free(t_btree* root)
+{
+	if (root == NULL)
+		return ;
+	btree_free(root->right);
+	free(root);
+	btree_free(root->left);
+}
+/*
 #include <string.h>
 #include <stdio.h>
 
@@ -69,7 +78,7 @@ void	print(void* s)
 {
 	printf("%s\n", (char*)s);
 }
-/*
+
 int main(void)
 {
 	t_btree *root;
@@ -85,5 +94,6 @@ int main(void)
 	btree_add(&root, (void*)s1, cmp);
 	btree_in_order(root, print);
 	btree_in_back_order(root, print);
+	btree_free(root);
 }
 */
