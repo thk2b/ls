@@ -6,12 +6,16 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 15:03:57 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 14:05:53 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 15:25:23 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "b_ls.h"
 #include "libft/libft.h"
+#include <pwd.h>
+#include <grp.h>
+#include <time.h>
+#include <sys/stat.h>
 
 static char	*get_perms(struct stat *s)
 {
@@ -71,7 +75,7 @@ char *strv_join(char **strv, const char *sep)
 	vi = 0;
 	sep_len = (ft_strlen(sep));
 	while (strv[vi])
-		len += strlen(strv[vi++]) + sep_len;
+		len += ft_strlen(strv[vi++]) + sep_len;
 	vi = 0;
 	if ((str = (char*)malloc(len + 1 * sizeof(char))) == NULL)
 		return (NULL);

@@ -6,16 +6,24 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 14:56:41 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 15:08:30 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 15:25:57 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "b_ls.h"
 #include "btree.h"
+#include "libft/libft.h"
+#include <stdio.h>
+#include <dirent.h>
+#include <stdlib.h>
+#include <sys/stat.h>
+#include <limits.h>
+#include <time.h>
+
 
 static int	cmp_name(void *f1, void *f2)
 {
-	return (strcmp(((const struct s_file*)f1)->name,
+	return (ft_strcmp(((const struct s_file*)f1)->name,
 		((const struct s_file*)f2)->name));
 }
 
@@ -42,9 +50,9 @@ static void	print_file(void *vfile)
 
 static char	*path_join(char *dst, const char *base, const char *file)
 {
-	strcpy(dst, base);
-	strcat(dst, "/");
-	strcat(dst, file);
+	ft_strcpy(dst, base);
+	ft_strcat(dst, "/");
+	ft_strcat(dst, file);
 	return (dst);
 }
 
