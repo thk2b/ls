@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 15:03:57 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 11:56:33 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 13:40:44 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static char	*get_perms(struct stat *s)
 	if ((str = (char*)malloc(11 * sizeof(char))) == NULL)
 		return (NULL);
 	str[0] = S_ISDIR(s->st_mode) ? 'd' : '-';
+	str[0] = S_ISLNK(s->st_mode) ? 'l' : '-';
 	str[1] = s->st_mode & S_IRUSR ? 'r' : '-';
 	str[2] = s->st_mode & S_IWUSR ? 'w' : '-';
 	str[3] = s->st_mode & S_IXUSR ? 'x' : '-';
@@ -53,8 +54,10 @@ static char *get_gname(struct stat *s)
 
 static char *get_time(struct stat *s)
 {
-	(void)s;
-	return (ft_strdup("time"));
+	char	*str;
+	if ((str = ctime(&s->st_mtime)) == NULL)
+		return (NULL);
+	return (ft_strdup(ft_strsub(str, 4, ft_strlen(str) - 13)));
 }
 
 char *strv_join(char **strv, const char *sep)
@@ -87,12 +90,17 @@ const char *render(struct s_file *file, struct stat *s)
 	char *sections[8];
 	
 	sections[7] = NULL;
-	sections[0] = get_perms(s);
+	if ((sections[0] = get_perms(s)) == NULL)
+		error(file->name);
 	sections[1] = ft_itoa(s->st_nlink);
-	sections[2] = get_uname(s);
-	sections[3] = get_gname(s);
+	if((sections[2] = get_uname(s)) == NULL)
+		error(file->name);
+	if((sections[3] = get_gname(s)) == NULL)
+		error(file->name);
 	sections[4] = ft_itoa(s->st_size);
-	sections[5] = get_time(s);
-	sections[6] = ft_strdup((char*)file->name);
+	if((sections[5] = get_time(s)) == NULL)
+		error(file->name);
+	if((sections[6] = ft_strdup((char*)file->name)) == NULL)
+		error(file->name);
 	return (strv_join(sections, "  "));
 }

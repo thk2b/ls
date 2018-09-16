@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 14:56:41 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 11:54:43 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 13:41:14 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static char	*path_join(char *dst, const char *base, const char *file)
 	return (dst);
 }
 
-static int (*cmp) (void *s1, void *s2);
+static int (*g_cmp) (void *s1, void *s2);
 
 static struct s_file *file_new(void)
 {
@@ -57,15 +57,14 @@ static struct s_file *file_new(void)
 
 int			b_ls(struct s_opts *opts, const char *filename)
 {
-	DIR	*dir;
+	DIR				*dir;
 	char			path[PATH_MAX];
 	struct dirent	*ent;
 	struct s_file	*file;
 	struct stat		st;
 	t_btree			*root;
 
-	(void)opts;
-	cmp = opts->sort & SORT_NAME ? cmp_name : cmp_time;
+	g_cmp = opts->sort & SORT_NAME ? cmp_name : cmp_time;
 	if((dir = opendir(filename)) == NULL)
 		return (error(filename));
 	while ((ent = readdir(dir)))
@@ -76,10 +75,10 @@ int			b_ls(struct s_opts *opts, const char *filename)
 			return (1);
 		file->name = ent->d_name;
 		file->repr = NULL;
-		file->timestamp = st.st_ctimespec.tv_sec;
+		file->timestamp = st.st_mtime;
 		if (opts->l)
 			file->repr = render(file, &st);
-		btree_add(&root, (void*)file, cmp);
+		btree_add(&root, (void*)file, g_cmp);
 	}
 	if (opts->sort & SORT_REV)
 		btree_in_back_order(root, print_file);
