@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 09:28:46 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/15 09:52:06 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/15 18:38:38 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,10 @@
 
 int		main(int argc, char **argv)
 {
+	struct s_opts	*opts;
+
+	opts = get_ops(argc, argv);
 	if (argc == 1)
-		b_ls(".");
-	else
-	{
-		argv++;
-		while (*argv)
-			b_ls(*argv++);
-	}
+		b_ls(opts, ".");
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 09:29:19 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/15 14:59:28 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/15 18:23:29 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ struct	s_file
 {
 	const char	*name;
 	time_t		timestamp;
+	const char	*repr;
 };
 
 int				error(const char *filename);
