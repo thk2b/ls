@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 09:29:19 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/15 18:23:29 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/15 20:57:25 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ struct	s_file
 };
 
 int				error(const char *filename);
-struct s_opts	*get_opts(int ac, const char **av);
+struct s_opts	*get_opts(int ac, char **av);
 const char		*render(struct s_opts *opts, struct stat *s);
 int				b_ls(struct s_opts *opts, const char *filename);
 

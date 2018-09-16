@@ -6,37 +6,40 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 14:56:41 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/15 20:37:25 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/15 21:28:20 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "b_ls.h"
 #include "btree.h"
 
-static int	cmp_name(void *f1,
-	void *f2)
+static int	cmp_name(void *f1, void *f2)
 {
 	return (strcmp(((const struct s_file*)f1)->name,
 		((const struct s_file*)f2)->name));
 }
 
-/*static int	cmp_time(void *f1,
-	void *f2)
+static int	cmp_time(void *f1, void *f2)
 {
-	return (((struct s_file*)f1)->name >
-		((struct s_file*)f2)->name);
-}*/
+	int	cmp;
+
+	cmp = ((struct s_file*)f2)->timestamp -
+		((struct s_file*)f1)->timestamp;
+	if (cmp == 0)
+		return (cmp_name(f2, f1));
+	return (cmp);
+}
 
 static void	print_file(void *vfile)
 {
 	struct s_file *file;
 	file = (struct s_file*)vfile;
 	printf("%s\n", file->repr ? file->repr : file->name);
+	free(vfile);
 }
 
 static char	*path_join(char *dst, const char *base, const char *file)
 {
-	memset((char*)dst, 0, strlen(dst));
 	strcpy(dst, base);
 	strcat(dst, "/");
 	strcat(dst, file);
@@ -60,7 +63,7 @@ int			b_ls(struct s_opts *opts, const char *filename)
 	t_btree	*root;
 
 	(void)opts;
-	cmp = cmp_name;
+	cmp = opts->sort & SORT_NAME ? cmp_name : cmp_time;
 	if((dir = opendir(filename)) == NULL)
 		return (error(filename));
 	while ((ent = readdir(dir)))
@@ -70,10 +73,14 @@ int			b_ls(struct s_opts *opts, const char *filename)
 		if (stat(path_join(path, filename, ent->d_name), &st) == -1)
 			return (1);
 		file->name = ent->d_name;
-		file->timestamp = st.st_mtime;
+		file->repr = NULL;
+		file->timestamp = st.st_ctimespec.tv_sec;
 		btree_add(&root, (void*)file, cmp);
 	}
-	btree_in_order(root, print_file);
+	if (opts->sort & SORT_REV)
+		btree_in_back_order(root, print_file);
+	else
+		btree_in_order(root, print_file);
 	btree_free(root);
 	return (0);
 }
