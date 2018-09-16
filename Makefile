@@ -4,6 +4,7 @@ SRC = b_ls.c\
 	btree.c\
 	error.c\
 	get_opts.c\
+	render.c\
 	main.c
 
 OBJ = $(SRC:.c=.o)

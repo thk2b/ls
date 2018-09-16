@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 14:56:41 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/15 21:49:39 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 10:38:25 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int			b_ls(struct s_opts *opts, const char *filename)
 	struct dirent	*ent;
 	struct s_file	*file;
 	struct stat		st;
-	t_btree	*root;
+	t_btree			*root;
 
 	(void)opts;
 	cmp = opts->sort & SORT_NAME ? cmp_name : cmp_time;
@@ -75,6 +75,8 @@ int			b_ls(struct s_opts *opts, const char *filename)
 		file->name = ent->d_name;
 		file->repr = NULL;
 		file->timestamp = st.st_ctimespec.tv_sec;
+		if (opts->l)
+			file->repr = render(file, &st);
 		btree_add(&root, (void*)file, cmp);
 	}
 	if (opts->sort & SORT_REV)
