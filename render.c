@@ -6,11 +6,12 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 15:03:57 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 10:38:52 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 11:56:33 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "b_ls.h"
+#include "libft/libft.h"
 
 static char	*get_perms(struct stat *s)
 {
@@ -38,41 +39,44 @@ static char *get_uname(struct stat *s)
 
 	if ((pw = getpwuid(s->st_uid)) == NULL)
 		return (NULL);
-	return (strdup(pw->pw_name));
+	return (ft_strdup(pw->pw_name));
 }
 
 static char *get_gname(struct stat *s)
 {
 	struct group *grp;
 
-	if ((grp = getgrgid(s->st_gid)))
+	if ((grp = getgrgid(s->st_gid)) == NULL)
 		return (NULL);
-	return (strdup(grp->gr_name));
+	return (ft_strdup(grp->gr_name));
 }
 
 static char *get_time(struct stat *s)
 {
-	return (strdup("time"));
+	(void)s;
+	return (ft_strdup("time"));
 }
 
-const char strv_join(const char	**strv)
+char *strv_join(char **strv, const char *sep)
 {
 	size_t	len;
 	size_t	vi;
+	size_t	sep_len;
 	char	*str;
 
 	len = 0;
 	vi = 0;
+	sep_len = (ft_strlen(sep));
 	while (strv[vi])
-		len += strlen(strv[vi++]) + 1;
+		len += strlen(strv[vi++]) + sep_len;
 	vi = 0;
 	if ((str = (char*)malloc(len + 1 * sizeof(char))) == NULL)
 		return (NULL);
 	while (strv[vi])
 	{
-		strcat(str, strv[vi]);
-		strcat(str, " ");
-		free(strv[vi++]);
+		ft_strcat(str, strv[vi]);
+		ft_strcat(str, sep);
+		free((char*)strv[vi++]);
 	}
 	str[len] = '\0';
 	return (str);
@@ -82,13 +86,13 @@ const char *render(struct s_file *file, struct stat *s)
 {
 	char *sections[8];
 	
-	sections[8] = NULL;
+	sections[7] = NULL;
 	sections[0] = get_perms(s);
-	sections[1] = atoi(s->st_nlink);
+	sections[1] = ft_itoa(s->st_nlink);
 	sections[2] = get_uname(s);
 	sections[3] = get_gname(s);
-	sections[4] = s->st_size;
+	sections[4] = ft_itoa(s->st_size);
 	sections[5] = get_time(s);
-	sections[6] = file->name;
-	return (strv_join(sections));
+	sections[6] = ft_strdup((char*)file->name);
+	return (strv_join(sections, "  "));
 }

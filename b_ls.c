@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 14:56:41 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 10:38:25 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 11:54:43 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,11 @@ static void	print_file(void *vfile)
 {
 	struct s_file *file;
 	file = (struct s_file*)vfile;
-	printf("%s\n", file->name);
+	printf("%s\n", file->repr ? file->repr : file->name);
+	
 	free(vfile);
 }
+
 
 static char	*path_join(char *dst, const char *base, const char *file)
 {
