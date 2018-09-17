@@ -6,11 +6,12 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 15:03:57 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 11:41:32 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 11:56:42 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "b_ls.h"
+#include "file.h"
 #include "libft/libft.h"
 #include <pwd.h>
 #include <grp.h>

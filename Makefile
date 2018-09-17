@@ -1,10 +1,12 @@
 NAME = b_ls
 
-SRC = b_ls.c\
-	btree.c\
+SRC =\
 	error.c\
 	get_opts.c\
+	btree.c\
+	file.c\
 	render.c\
+	b_ls.c\
 	main.c
 
 OBJ = $(SRC:.c=.o)
