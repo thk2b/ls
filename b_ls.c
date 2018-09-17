@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 09:52:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 15:40:40 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 15:53:41 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,7 @@
 #include <dirent.h>
 #include <limits.h>
 #include <sys/stat.h>
-#include <stdio.h>
 
-static int	(*g_cmp) (void*, void*);
 static void	(*g_traverse) (t_btree *root, void *ctx, void(*f)(void *ctx, void *data));
 
 static char	*path_join(char *dst, const char *base, const char *file)
@@ -52,7 +50,7 @@ static void	b_ls_dir(void *ctx, void *data)
 		if((child_data = get_file(opts, child->d_name, path_join(path, dir_data->path, child->d_name))) == NULL)
 			return ((void)error(path));
 		// recursive: if child is a dir, call this fn with the file & don't add it to the tree
-		btree_add(&tree, (void*)child_data, g_cmp);
+		btree_add(&tree, (void*)child_data, (void*)opts, cmp_files);
 	}
 	g_traverse(tree, (void*)opts, print_file);
 	btree_free(tree);
@@ -67,7 +65,6 @@ int			b_ls(struct s_opts *opts, size_t nfiles, const char **filenames)
 
 	filetree = NULL;
 	dirtree = NULL;
-	g_cmp = opts->sort == SORT_NAME ? cmp_name : cmp_time;
 	g_traverse = opts->rev ? btree_in_back_order : btree_in_order;
 	if (nfiles == 0)
 	{
@@ -81,7 +78,7 @@ int			b_ls(struct s_opts *opts, size_t nfiles, const char **filenames)
 	{
 		if((file = get_file(opts, filenames[i], filenames[i])) == NULL)
 			error(filenames[i]);
-		btree_add(file->is_dir ? &dirtree : &filetree, (void*)file, g_cmp);
+		btree_add(file->is_dir ? &dirtree : &filetree, (void*)file, (void*)opts, cmp_files);
 		i++;
 	}
 	if (filetree != NULL)

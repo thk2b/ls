@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 10:15:32 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 15:25:26 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 15:50:24 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,7 @@ struct			s_file
 	int			is_dir;
 };
 
-int				cmp_name(void*, void*);
-int				cmp_time(void*, void*);
+int				cmp_files(void *ctx, void *d1, void *d2);
 void			print_file(void *ctx, void *data);
 const char		*render(struct s_file *file, struct stat *s);
 struct s_file	*get_file(struct s_opts *opts, const char *name, const char *path);

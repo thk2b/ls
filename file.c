@@ -6,29 +6,31 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 10:18:31 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 15:30:57 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 15:52:34 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft/libft.h"
+#include "opts.h"
 #include "file.h"
 #include <sys/stat.h>
 
-int				cmp_name(void *f1, void *f2)
+int					cmp_files(void *ctx, void *d1, void *d2)
 {
-	return (ft_strcmp(((const struct s_file*)f1)->path,
-		((const struct s_file*)f2)->path));
-}
+	struct s_file	*f1;
+	struct s_file	*f2;
+	struct s_opts	*opts;
+	int				cmp;
 
-int				cmp_time(void *f1, void *f2)
-{
-	int	cmp;
-
-	cmp = ((struct s_file*)f2)->timestamp -
-		((struct s_file*)f1)->timestamp;
-	if (cmp == 0)
-		return (cmp_name(f2, f1));
-	return (cmp);
+	f1 = (struct s_file*)d1;
+	f2 = (struct s_file*)d2;
+	opts = (struct s_opts*)ctx;
+	cmp = 0;
+	if (opts->sort == SORT_TIME)
+		cmp = (int)f2->timestamp - (int)f1->timestamp;
+		if (cmp != 0)
+			return (cmp);
+	return (ft_strcmp(f1->path, f2->path));
 }
 
 void				print_file(void *ctx, void *vfile)

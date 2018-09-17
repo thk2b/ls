@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 19:13:07 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 11:48:45 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 15:53:13 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_btree	*btree_new(void *data)
 	return (node);
 }
 
-t_btree	*btree_add(t_btree **root, void *data, int (*cmp)(void*, void*))
+t_btree	*btree_add(t_btree **root, void *data, void *ctx, int (*cmp)(void *ctx, void*, void*))
 {
 	t_btree	**curr;
 
@@ -32,7 +32,7 @@ t_btree	*btree_add(t_btree **root, void *data, int (*cmp)(void*, void*))
 		return (*root = btree_new(data));
 	curr = root;
 	while (*curr != NULL)
-		if (cmp(data, (*curr)->data) > 0)
+		if (cmp(ctx, data, (*curr)->data) > 0)
 			curr = &(*curr)->right;
 		else
 			curr = &(*curr)->left;
