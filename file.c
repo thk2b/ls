@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 10:18:31 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 11:53:15 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 15:30:57 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 int				cmp_name(void *f1, void *f2)
 {
-	return (ft_strcmp(((const struct s_file*)f1)->name,
-		((const struct s_file*)f2)->name));
+	return (ft_strcmp(((const struct s_file*)f1)->path,
+		((const struct s_file*)f2)->path));
 }
 
 int				cmp_time(void *f1, void *f2)
@@ -37,27 +37,39 @@ void				print_file(void *ctx, void *vfile)
 
 	(void)ctx;
 	file = (struct s_file*)vfile;
-	ft_putstr(file->repr ? file->repr : file->name);
+	ft_putstr(file->repr);
 	ft_putchar('\n');
+	dealloc_file(file);
 	free(vfile);
 }
 
-struct s_file	*get_file(struct s_opts *opts, const char *path)
+struct s_file	*get_file(struct s_opts *opts, const char *name, const char *path)
 {
 	struct s_file	*file;
 	struct stat		st;
 
 	if ((file = (struct s_file*)malloc(sizeof(struct s_file))) == NULL)
 		return (NULL);
-	file->name = path;
+	file->path = ft_strdup(path);
 	if (stat(path, &st) == -1)
 	{
 		error(path);
 		return (NULL);
 	}
-	file->repr = NULL;
+	file->is_dir = S_ISDIR(st.st_mode);
+	file->name = ft_strdup(name);
 	file->timestamp = st.st_mtime;
 	if (opts->l)
 		file->repr = render(file, &st);
+	else
+		file->repr = file->name;
 	return (file);
+}
+
+void			dealloc_file(struct s_file *file)
+{
+	if (file->repr != file->name)
+		free((char*)file->repr);
+	free((char*)file->name);
+	free((char*)file->path);
 }

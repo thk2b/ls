@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 15:01:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 11:49:41 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 15:00:29 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static struct s_opts	*opts_new(void)
 	return (opts);
 }
 
-struct s_opts			*get_opts(int *nflags, char **av)
+struct s_opts			*get_opts(int *nflags, const char **av)
 {
 	struct s_opts	*opts;
 	size_t			opti;

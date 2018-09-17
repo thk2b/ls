@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 10:40:22 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 10:41:01 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 15:00:07 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ struct			s_opts
 	unsigned int		recursive;
 };
 
-struct s_opts	*get_opts(int *ac, char **av);
+struct s_opts	*get_opts(int *ac, const char **av);
 
 #endif

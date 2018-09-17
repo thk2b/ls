@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 09:52:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 12:07:47 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 15:40:40 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include <dirent.h>
 #include <limits.h>
 #include <sys/stat.h>
+#include <stdio.h>
 
 static int	(*g_cmp) (void*, void*);
 static void	(*g_traverse) (t_btree *root, void *ctx, void(*f)(void *ctx, void *data));
@@ -42,16 +43,19 @@ static void	b_ls_dir(void *ctx, void *data)
 
 	opts = (struct s_opts*)ctx;
 	dir_data = (struct s_file*)data;
-	if ((dir = opendir(dir_data->name)) == NULL)
-		return ((void)error(dir_data->name));
+	if ((dir = opendir(dir_data->path)) == NULL)
+		return ((void)error(dir_data->path));
 	while ((child = readdir(dir)))
 	{
-		if((child_data = get_file(opts, path_join(path, dir_data->name, child->d_name))) == NULL)
+		if (opts->all == 0 && child->d_name[0] == '.')
+			continue ;
+		if((child_data = get_file(opts, child->d_name, path_join(path, dir_data->path, child->d_name))) == NULL)
 			return ((void)error(path));
 		// recursive: if child is a dir, call this fn with the file & don't add it to the tree
 		btree_add(&tree, (void*)child_data, g_cmp);
 	}
 	g_traverse(tree, (void*)opts, print_file);
+	btree_free(tree);
 }
 
 int			b_ls(struct s_opts *opts, size_t nfiles, const char **filenames)
@@ -67,7 +71,7 @@ int			b_ls(struct s_opts *opts, size_t nfiles, const char **filenames)
 	g_traverse = opts->rev ? btree_in_back_order : btree_in_order;
 	if (nfiles == 0)
 	{
-		if((file = get_file(opts, ".")) == NULL)
+		if((file = get_file(opts, ".", ".")) == NULL)
 			return (error("."));
 		b_ls_dir(opts, file);
 		return (0);
@@ -75,7 +79,7 @@ int			b_ls(struct s_opts *opts, size_t nfiles, const char **filenames)
 	i = 0;
 	while (i < nfiles)
 	{
-		if((file = get_file(opts, filenames[i])) == NULL)
+		if((file = get_file(opts, filenames[i], filenames[i])) == NULL)
 			error(filenames[i]);
 		btree_add(file->is_dir ? &dirtree : &filetree, (void*)file, g_cmp);
 		i++;
@@ -84,5 +88,7 @@ int			b_ls(struct s_opts *opts, size_t nfiles, const char **filenames)
 		g_traverse(filetree, opts, print_file);
 	if (dirtree != NULL)
 		g_traverse(dirtree, opts, b_ls_dir);
+	btree_free(filetree);
+	btree_free(dirtree);
 	return (0);
 }
