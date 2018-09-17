@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   b_ls.c                                             :+:      :+:    :+:   */
+/*   file.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/17 09:52:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 09:59:15 by tkobb            ###   ########.fr       */
+/*   Created: 2018/09/17 10:15:32 by tkobb             #+#    #+#             */
+/*   Updated: 2018/09/17 10:17:28 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
-#include "btree.h"
-#include <sys/stat.h>
+#ifndef FILE_H
+# define FILE_H
+# include <time.h>
 
-int		b_ls(t_btree** filetree, struct s_opts *opts, const char *filename)
+struct			s_file
 {
+	const char	*name;
+	time_t		timestamp;
+	const char	*repr;
+};
 
-}
+int				cmp_name(void*, void*);
+int				cmp_time(void*, void*);
+void			print_file(void*);
+
+#endif
