@@ -6,17 +6,17 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 15:01:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 18:16:10 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 23:13:23 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "b_ls.h"
 #include <stdlib.h>
 
-static struct s_opts	*opts_new()
+static struct s_opts	*opts_new(void)
 {
 	struct s_opts	*opts;
-	
+
 	if ((opts = (struct s_opts*)malloc(sizeof(struct s_opts))) == NULL)
 		return (NULL);
 	opts->all = 0;
@@ -24,22 +24,10 @@ static struct s_opts	*opts_new()
 	opts->l = 0;
 	opts->recursive = 0;
 	opts->sort = SORT_NAME;
-
 	return (opts);
 }
 
-#include <stdio.h>
-static void print_opts(struct s_opts *o)
-{
-	printf("all: %d\n", o->all);
-	printf("long: %d\n", o->l);
-	printf("recursive: %d\n", o->recursive);
-	printf("rev: %d\n", o->rev );
-	printf("time: %d\n", o->sort == SORT_TIME);
-	printf("name: %d\n\n", o->sort == SORT_NAME);
-}
-
-struct s_opts	*get_opts(int *nflags, char **av)
+struct s_opts			*get_opts(int *nflags, char **av)
 {
 	struct s_opts	*opts;
 	size_t			opti;
@@ -73,7 +61,5 @@ struct s_opts	*get_opts(int *nflags, char **av)
 		flagi++;
 	}
 	*nflags = flagi - 1;
-//	print_opts(opts);
-	(void)print_opts;
 	return (opts);
 }

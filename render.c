@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 15:03:57 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 18:39:20 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 23:08:47 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static char	*get_perms(struct stat *s)
 	return (str);
 }
 
-static char *get_uname(struct stat *s)
+static char	*get_uname(struct stat *s)
 {
 	struct passwd *pw;
 
@@ -47,7 +47,7 @@ static char *get_uname(struct stat *s)
 	return (ft_strdup(pw->pw_name));
 }
 
-static char *get_gname(struct stat *s)
+static char	*get_gname(struct stat *s)
 {
 	struct group *grp;
 
@@ -56,15 +56,16 @@ static char *get_gname(struct stat *s)
 	return (ft_strdup(grp->gr_name));
 }
 
-static char *get_time(struct stat *s)
+static char	*get_time(struct stat *s)
 {
 	char	*str;
+
 	if ((str = ctime(&s->st_mtime)) == NULL)
 		return (NULL);
 	return (ft_strdup(ft_strsub(str, 4, ft_strlen(str) - 5)));
 }
 
-char *strv_join(char **strv, const char *sep)
+char		*strv_join(char **strv, const char *sep)
 {
 	size_t	len;
 	size_t	vi;
@@ -89,22 +90,22 @@ char *strv_join(char **strv, const char *sep)
 	return (str);
 }
 
-const char *render(struct s_file *file, struct stat *s)
+const char	*render(struct s_file *file, struct stat *s)
 {
 	char *sections[8];
-	
+
 	sections[7] = NULL;
 	if ((sections[0] = get_perms(s)) == NULL)
 		error(file->name);
 	sections[1] = ft_itoa(s->st_nlink);
-	if((sections[2] = get_uname(s)) == NULL)
+	if ((sections[2] = get_uname(s)) == NULL)
 		error(file->name);
-	if((sections[3] = get_gname(s)) == NULL)
+	if ((sections[3] = get_gname(s)) == NULL)
 		error(file->name);
 	sections[4] = ft_itoa(s->st_size);
-	if((sections[5] = get_time(s)) == NULL)
+	if ((sections[5] = get_time(s)) == NULL)
 		error(file->name);
-	if((sections[6] = ft_strdup((char*)file->name)) == NULL)
+	if ((sections[6] = ft_strdup((char*)file->name)) == NULL)
 		error(file->name);
 	return (strv_join(sections, "  "));
 }

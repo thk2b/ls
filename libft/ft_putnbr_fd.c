@@ -1,28 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/15 14:58:27 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 23:04:26 by tkobb            ###   ########.fr       */
+/*   Created: 2018/09/16 21:25:42 by tkobb             #+#    #+#             */
+/*   Updated: 2018/09/16 21:48:42 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "b_ls.h"
-#include "libft/libft.h"
-#include <string.h>
+#include "libft.h"
 
-int		error(const char *filename)
+void	ft_putnbr_fd(int n, int fd)
 {
-	if (filename == NULL)
-		ft_putendl(strerror(errno));
-	else
+	unsigned long	un;
+	unsigned long	next_pow;
+	unsigned long	pow;
+
+	if (n < 0)
 	{
-		ft_putstr(filename);
-		ft_putstr(": ");
-		ft_putendl(strerror(errno));
+		un = (unsigned long)(-1 * (long)n);
+		ft_putchar_fd('-', fd);
 	}
-	return (1);
+	else
+		un = (unsigned long)n;
+	pow = 1;
+	while ((next_pow = 10 * pow) < un && next_pow)
+		pow = next_pow;
+	while (pow)
+	{
+		ft_putchar_fd((un / pow % 10) + '0', fd);
+		pow /= 10;
+	}
 }

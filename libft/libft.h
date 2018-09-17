@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/13 23:36:48 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 11:24:22 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 21:51:25 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,8 +62,17 @@ char	*ft_itoa(int n);
 void	ft_putchar(char c);
 void	ft_putstr(const char *s);
 void	ft_putendl(const char *s);
+void	ft_putnbr(int n);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(const char *s, int fd);
 void	ft_putendl_fd(const char *s, int fd);
+void	ft_putnbr_fd(int n, int fd);
+
+/*
+** char	*ft_strchrs(const char *s, const char *targets);
+** char	*ft_strvjoin(const char **strv);
+** void	*ft_strreduce(char *s, char (*f)(void *acc, char));
+** void	*ft_strreducei(char *s, char (*f)(void *acc, unsigned int, char));
+*/
 
 #endif

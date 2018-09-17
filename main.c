@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 09:28:46 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 15:20:41 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 23:06:41 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int		main(int argc, char **argv)
 	int				nflags;
 	int				nfiles;
 	int				i;
-	
+
 	(void)argc;
 	nflags = 0;
 	opts = get_opts(&nflags, argv);

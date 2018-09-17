@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 09:29:19 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 15:26:29 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 23:14:15 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ enum	e_sort_flags
 	SORT_TIME
 };
 
-struct	s_opts
+struct			s_opts
 {
 	enum e_sort_flags	sort;
 	unsigned int		rev;
@@ -31,7 +31,7 @@ struct	s_opts
 	unsigned int		recursive;
 };
 
-struct	s_file
+struct			s_file
 {
 	const char	*name;
 	time_t		timestamp;

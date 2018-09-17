@@ -6,61 +6,61 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/14 21:00:30 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/14 22:10:09 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 21:49:14 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
-static char	*alloc_word(const char *start, const char *end)
+static char		*alloc_str(const char *start, const char *end)
 {
+	char	*s;
 	size_t	len;
-	char	*w;
 
-	len = end - start + 1;
-	w = (char*)malloc(len * sizeof (char));
-	if (w == NULL)
+	len = (end - start);
+	if ((s = (char*)malloc((len + 1) * sizeof(char))) == NULL)
 		return (NULL);
-	ft_strncpy(w, start, len - 1);
-	w[len] = '\0';
-	return (w);
+	ft_memcpy(s, start, len);
+	s[len] = '\0';
+	return (s);
 }
 
-char	**ft_strsplit(const char *s, char c)
+static char		**alloc_splits(const char *s, char c)
 {
-	const char	*t;
-	size_t		wc;
-	char		**words;
-	const char	*start;
+	size_t	count;
 
-	t = s;
-	wc = 1;
+	count = 1;
+	if (*s == c)
+		s++;
 	while (*s)
 		if (*s++ == c && *s && *s != c)
-			wc++;
-	s = t;
-	words = (char**)malloc((wc + 1) * sizeof(char));
-	if (words == NULL)
+			count++;
+	return ((char**)malloc(count * sizeof(char**)));
+}
+
+char			**ft_strsplit(const char *s, char c)
+{
+	const char	*t;
+	char		**strv;
+	size_t		i;
+
+	t = s;
+	i = 0;
+	if ((strv = alloc_splits(s, c)) == NULL)
 		return (NULL);
-	start = s;
-	while(*s)
+	while (s && *s)
 	{
-		if (*s == c)
-		{
-			if (start != s)
-				if((*words++ = alloc_word(start, s)) == NULL)
-					return (NULL);
-			while (*s && *s == c)
-				s++;
-			start = s;
-		}
+		if ((t = ft_strchr(s, (int)c)) == NULL)
+			strv[i++] = alloc_str(s, s + ft_strlen(s));
 		else
-			s++;
+		{
+			if (t != s)
+				strv[i++] = alloc_str(s, t);
+			while (*t && *t == c)
+				t++;
+		}
+		s = t;
 	}
-	if (start != s)
-		if((*words++ = alloc_word(start, s)) == NULL)
-			return (NULL);
-	*words = NULL;
-	return (words - wc);
+	strv[i] = NULL;
+	return (strv);
 }

@@ -6,28 +6,26 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 14:56:41 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 18:27:00 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 23:12:06 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "b_ls.h"
 #include "btree.h"
 #include "libft/libft.h"
-#include <stdio.h>
 #include <dirent.h>
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <limits.h>
 #include <time.h>
 
-
-static int	cmp_name(void *f1, void *f2)
+static int				cmp_name(void *f1, void *f2)
 {
 	return (ft_strcmp(((const struct s_file*)f1)->name,
 		((const struct s_file*)f2)->name));
 }
 
-static int	cmp_time(void *f1, void *f2)
+static int				cmp_time(void *f1, void *f2)
 {
 	int	cmp;
 
@@ -38,17 +36,17 @@ static int	cmp_time(void *f1, void *f2)
 	return (cmp);
 }
 
-static void	print_file(void *vfile)
+static void				print_file(void *vfile)
 {
-	struct s_file *file;
+	struct s_file	*file;
+
 	file = (struct s_file*)vfile;
-	printf("%s\n", file->repr ? file->repr : file->name);
-	
+	ft_putstr(file->repr ? file->repr : file->name);
+	ft_putchar('\n');
 	free(vfile);
 }
 
-
-static char	*path_join(char *dst, const char *base, const char *file)
+static char				*path_join(char *dst, const char *base, const char *file)
 {
 	ft_memset(dst, 0, ft_strlen(base) + ft_strlen(file) + 2);
 	ft_strcpy(dst, base);
@@ -57,14 +55,14 @@ static char	*path_join(char *dst, const char *base, const char *file)
 	return (dst);
 }
 
-static int (*g_cmp) (void *s1, void *s2);
+static int				(*g_cmp) (void *s1, void *s2);
 
-static struct s_file *file_new(void)
+static struct s_file	*file_new(void)
 {
 	return ((struct s_file*)malloc(sizeof(struct s_file)));
 }
 
-int			b_ls(struct s_opts *opts, const char *filename)
+int						b_ls(struct s_opts *opts, const char *filename)
 {
 	DIR				*dir;
 	char			path[PATH_MAX];
@@ -75,22 +73,22 @@ int			b_ls(struct s_opts *opts, const char *filename)
 
 	ft_bzero(path, PATH_MAX);
 	g_cmp = opts->sort == SORT_TIME ? cmp_time : cmp_name;
-	if((dir = opendir(filename)) == NULL)
+	if ((dir = opendir(filename)) == NULL)
 		return (error(filename));
 	while ((ent = readdir(dir)))
 	{
-		if((file = file_new()) == NULL)
+		if ((file = file_new()) == NULL)
 			return (1);
 		if (ent->d_name[0] == '.' && opts->all == 0)
 		{
-			free (file);
+			free(file);
 			continue ;
 		}
 		if (stat(path_join(path, filename, ent->d_name), &st) == -1)
 		{
 			error(ent->d_name);
 			continue ;
-		};
+		}
 		file->name = ent->d_name;
 		file->repr = NULL;
 		file->timestamp = st.st_mtime;

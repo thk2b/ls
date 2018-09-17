@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strnstr.c                                          :+:      :+:    :+:   */
+/*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/14 16:25:05 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/14 18:25:04 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 22:29:13 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@ char	*ft_strnstr(const char *s, const char *t, size_t len)
 	if (*s == '\0')
 		return (*t == '\0' ? (char*)s : (NULL));
 	tlen = ft_strlen(t);
+	if (len < tlen)
+		return (NULL);
 	if (tlen == len)
 		return (ft_strncmp(s, t, len) == 0 ? (char*)s : NULL);
 	while (*s && (tlen - len--) > 0)

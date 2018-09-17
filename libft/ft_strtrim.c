@@ -6,33 +6,32 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/14 20:51:52 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/14 22:24:43 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 19:29:50 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdio.h>
 
 char	*ft_strtrim(const char *s)
 {
-	const char *start;
-	size_t len;
-	char *t;
+	const char	*start;
+	size_t		len;
+	char		*t;
 
-	while (*s == ' ' || *s == '\n' || *s == '\t')
+	while (*s && (*s == ' ' || *s == '\t' || *s == '\n'))
 		s++;
+	if (*s == '\0')
+		return (ft_strnew(1));
 	start = s;
-	s += ft_strlen(s);
-	while (*s == ' ' || *s == '\n' || *s == '\t')
+	while (*s)
+		s++;
+	s--;
+	while (*s && (*s == ' ' || *s == '\t' || *s == '\n'))
 		s--;
-	len = s - start - 1;
-	t = ((char*)malloc((len) * sizeof(char)));
-	if (t == NULL)
+	len = s - start + 1;
+	if ((t = (char*)malloc((len + 1) * sizeof(char))) == NULL)
 		return (NULL);
+	ft_strncpy(t, start, len);
 	t[len] = '\0';
-	return (ft_strncpy(t, start, len - 1));	
-}
-int main()
-{
-	printf("%s\n", ft_strtrim("  abc  1234567891011 \t"));
+	return (t);
 }

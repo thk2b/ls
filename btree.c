@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 19:13:07 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/15 21:42:43 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 23:06:25 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 t_btree	*btree_new(void *data)
 {
 	t_btree *node;
-	
+
 	if ((node = (t_btree*)malloc(sizeof(t_btree))) == NULL)
 		return (NULL);
 	node->right = NULL;
@@ -57,7 +57,7 @@ void	btree_in_back_order(t_btree *root, void (*f)(void*))
 	btree_in_back_order(root->left, f);
 }
 
-void	btree_free(t_btree* root)
+void	btree_free(t_btree *root)
 {
 	if (root == NULL)
 		return ;

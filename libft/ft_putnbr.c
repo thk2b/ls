@@ -1,28 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   error.c                                            :+:      :+:    :+:   */
+/*   ft_putnbr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/15 14:58:27 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 23:04:26 by tkobb            ###   ########.fr       */
+/*   Created: 2018/09/16 21:26:47 by tkobb             #+#    #+#             */
+/*   Updated: 2018/09/16 21:37:09 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "b_ls.h"
-#include "libft/libft.h"
-#include <string.h>
+#include "libft.h"
 
-int		error(const char *filename)
+void	ft_putnbr(int n)
 {
-	if (filename == NULL)
-		ft_putendl(strerror(errno));
-	else
-	{
-		ft_putstr(filename);
-		ft_putstr(": ");
-		ft_putendl(strerror(errno));
-	}
-	return (1);
+	ft_putnbr_fd(n, 1);
 }

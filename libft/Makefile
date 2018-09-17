@@ -1,5 +1,4 @@
 NAME = libft.a
-TEST_NAME = test.out
 
 FLAGS = -Wall -Wextra -Werror
 
@@ -50,24 +49,26 @@ SRCS = ft_memset.c\
 	ft_putchar.c\
 	ft_putstr.c\
 	ft_putendl.c\
+	ft_putnbr.c\
 	ft_putchar_fd.c\
 	ft_putstr_fd.c\
 	ft_putendl_fd.c\
+	ft_putnbr_fd.c\
 
 OBJS = $(SRCS:.c=.o)
 
 %.o: %.c
-	gcc -I./ $(FLAGS) -c $< -o $@
+	gcc $(FLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
-	ar rcs $(NAME) $(OBJS) 
+	ar rcs $(NAME) $(OBJS)
 
 all: $(NAME)
 
 clean:
-	/bin/rm -f *.o
+	rm -f $(OBJS)
 
 fclean: clean
-	/bin/rm -f $(NAME)
+	rm -f $(NAME)
 
-re: fclean $(NAME)
+re: fclean all
