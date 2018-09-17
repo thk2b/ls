@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 09:52:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 15:53:41 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 16:37:14 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static void	b_ls_dir(void *ctx, void *data)
 	btree_free(tree);
 }
 
-int			b_ls(struct s_opts *opts, size_t nfiles, const char **filenames)
+int			b_ls(struct s_opts *opts, const char **filenames)
 {
 	size_t			i;
 	struct s_file	*file;
@@ -66,7 +66,7 @@ int			b_ls(struct s_opts *opts, size_t nfiles, const char **filenames)
 	filetree = NULL;
 	dirtree = NULL;
 	g_traverse = opts->rev ? btree_in_back_order : btree_in_order;
-	if (nfiles == 0)
+	if (opts->nfiles == 0)
 	{
 		if((file = get_file(opts, ".", ".")) == NULL)
 			return (error("."));
@@ -74,7 +74,7 @@ int			b_ls(struct s_opts *opts, size_t nfiles, const char **filenames)
 		return (0);
 	}
 	i = 0;
-	while (i < nfiles)
+	while (i < opts->nfiles)
 	{
 		if((file = get_file(opts, filenames[i], filenames[i])) == NULL)
 			error(filenames[i]);

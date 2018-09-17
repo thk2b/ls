@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 09:29:19 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 11:58:29 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 16:37:38 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,6 @@
 # include <sys/stat.h>
 
 int				error(const char *filename);
-int				b_ls(struct s_opts *opts, size_t nfiles, const char **filename);
+int				b_ls(struct s_opts *opts, const char **filename);
 
 #endif

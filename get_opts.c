@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 15:01:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 15:00:29 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 16:39:42 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static struct s_opts	*opts_new(void)
 	if ((opts = (struct s_opts*)malloc(sizeof(struct s_opts))) == NULL)
 		return (NULL);
 	opts->all = 0;
+	opts->nfiles = 0;
 	opts->rev = 0;
 	opts->l = 0;
 	opts->recursive = 0;
@@ -28,7 +29,7 @@ static struct s_opts	*opts_new(void)
 	return (opts);
 }
 
-struct s_opts			*get_opts(int *nflags, const char **av)
+struct s_opts			*get_opts(int ac, const char **av)
 {
 	struct s_opts	*opts;
 	size_t			opti;
@@ -54,13 +55,12 @@ struct s_opts			*get_opts(int *nflags, const char **av)
 				opts->recursive = 1;
 			if (av[flagi][opti] == '-')
 			{
-				*nflags = flagi;
 				return (opts);
 			}
 			opti++;
 		}
 		flagi++;
 	}
-	*nflags = flagi - 1;
+	opts->nfiles = ac - flagi;
 	return (opts);
 }
