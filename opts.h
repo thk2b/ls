@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   file.h                                             :+:      :+:    :+:   */
+/*   opts.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/17 10:15:32 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 10:43:29 by tkobb            ###   ########.fr       */
+/*   Created: 2018/09/17 10:40:22 by tkobb             #+#    #+#             */
+/*   Updated: 2018/09/17 10:41:01 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FILE_H
-# define FILE_H
-# include "b_ls.h"
-# include "opts.h"
-# include <time.h>
+#ifndef OPTS_H
+# define OPTS_H
 
-struct			s_file
+enum	e_sort_flags
 {
-	const char	*name;
-	time_t		timestamp;
-	const char	*repr;
-	int			is_dir;
+	SORT_NAME,
+	SORT_TIME
 };
 
-int				cmp_name(void*, void*);
-int				cmp_time(void*, void*);
-void			print_file(void*);
-struct s_file	*get_file(struct s_opts *opts, const char *path);
+struct			s_opts
+{
+	enum e_sort_flags	sort;
+	unsigned int		rev;
+	unsigned int		l;
+	unsigned int		all;
+	unsigned int		recursive;
+};
+
+struct s_opts	*get_opts(int *ac, char **av);
 
 #endif

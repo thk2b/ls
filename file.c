@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 10:18:31 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 10:31:19 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 10:39:10 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void				print_file(void *vfile)
 	free(vfile);
 }
 
-struct s_file	*file_new(struct s_opts *opts, const char *path)
+struct s_file	*get_file(struct s_opts *opts, const char *path)
 {
 	struct s_file	*file;
 

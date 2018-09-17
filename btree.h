@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 18:23:51 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 23:14:51 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 11:08:21 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ typedef struct	s_btree
 
 t_btree			*btree_new(void *data);
 t_btree			*btree_add(t_btree **root, void *data, int (*cmp)(void*, void*));
-void			btree_in_order(t_btree *root, void (*f)(void*));
-void			btree_in_back_order(t_btree *root, void (*f)(void*));
+void			btree_in_order(t_btree *root, void (*f)(void* ctx, void *data));
+void			btree_in_back_order(t_btree *root, void (*f)(void *ctx, void *data));
 void			btree_free(t_btree *root);
 
 #endif
