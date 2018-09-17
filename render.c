@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 15:03:57 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 17:56:44 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 18:39:20 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ static char	*get_perms(struct stat *s)
 {
 	char	*str;
 
-	if ((str = (char*)malloc(11 * sizeof(char))) == NULL)
+	if ((str = ft_strnew(11)) == NULL)
 		return (NULL);
 	str[0] = S_ISDIR(s->st_mode) ? 'd' : '-';
-	str[0] = S_ISLNK(s->st_mode) ? 'l' : '-';
+	str[0] = S_ISLNK(s->st_mode) ? 'l' : str[0];
 	str[1] = s->st_mode & S_IRUSR ? 'r' : '-';
 	str[2] = s->st_mode & S_IWUSR ? 'w' : '-';
 	str[3] = s->st_mode & S_IXUSR ? 'x' : '-';
@@ -77,7 +77,7 @@ char *strv_join(char **strv, const char *sep)
 	while (strv[vi])
 		len += ft_strlen(strv[vi++]) + sep_len;
 	vi = 0;
-	if ((str = (char*)malloc(len + 1 * sizeof(char))) == NULL)
+	if ((str = ft_strnew((len + 1) * sizeof(char))) == NULL)
 		return (NULL);
 	while (strv[vi])
 	{
