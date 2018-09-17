@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 14:56:41 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/16 15:25:57 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/16 18:27:00 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static void	print_file(void *vfile)
 
 static char	*path_join(char *dst, const char *base, const char *file)
 {
+	ft_memset(dst, 0, ft_strlen(base) + ft_strlen(file) + 2);
 	ft_strcpy(dst, base);
 	ft_strcat(dst, "/");
 	ft_strcat(dst, file);
@@ -72,6 +73,7 @@ int			b_ls(struct s_opts *opts, const char *filename)
 	struct stat		st;
 	t_btree			*root;
 
+	ft_bzero(path, PATH_MAX);
 	g_cmp = opts->sort == SORT_TIME ? cmp_time : cmp_name;
 	if((dir = opendir(filename)) == NULL)
 		return (error(filename));
