@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 15:01:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 16:39:42 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 17:21:01 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ struct s_opts			*get_opts(int ac, const char **av)
 				opts->recursive = 1;
 			if (av[flagi][opti] == '-')
 			{
+				opts->nfiles = ac - flagi - 1;
 				return (opts);
 			}
 			opti++;
