@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 15:03:57 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 11:56:42 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/18 16:48:56 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,34 +66,11 @@ static char	*get_time(struct stat *s)
 	return (ft_strdup(ft_strsub(str, 4, ft_strlen(str) - 5)));
 }
 
-char		*strv_join(char **strv, const char *sep)
-{
-	size_t	len;
-	size_t	vi;
-	size_t	sep_len;
-	char	*str;
-
-	len = 0;
-	vi = 0;
-	sep_len = (ft_strlen(sep));
-	while (strv[vi])
-		len += ft_strlen(strv[vi++]) + sep_len;
-	vi = 0;
-	if ((str = ft_strnew((len + 1) * sizeof(char))) == NULL)
-		return (NULL);
-	while (strv[vi])
-	{
-		ft_strcat(str, strv[vi]);
-		ft_strcat(str, sep);
-		free((char*)strv[vi++]);
-	}
-	str[len] = '\0';
-	return (str);
-}
-
 const char	*render(struct s_file *file, struct stat *s)
 {
-	char *sections[8];
+	char	*sections[8];
+	char	*str;
+	int		i;
 
 	sections[7] = NULL;
 	if ((sections[0] = get_perms(s)) == NULL)
@@ -108,5 +85,9 @@ const char	*render(struct s_file *file, struct stat *s)
 		error(file->name);
 	if ((sections[6] = ft_strdup((char*)file->name)) == NULL)
 		error(file->name);
-	return (strv_join(sections, "  "));
+	str = ft_strvjoin((const char**)sections, "  ");
+	i = 0;
+	while (i < 8)
+		free(sections[i++]);
+	return (str);
 }
