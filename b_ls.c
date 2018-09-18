@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 09:52:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 17:16:57 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 17:26:44 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,8 +55,9 @@ static void	b_ls_dir(void *ctx, void *data)
 		if (opts->all == 0 && child->d_name[0] == '.')
 			continue ;
 		if((child_data = get_file(opts, child->d_name, path_join(path, dir_data->path, child->d_name))) == NULL)
-			return ((void)error(path));
+			(void)error(path);
 		// recursive: if child is a dir, add it to the dir tree and add it to the tree
+		else
 			btree_add(&tree, (void*)child_data, (void*)opts, cmp_files);
 	}
 	g_traverse(tree, (void*)opts, print_file);
@@ -85,14 +86,19 @@ int			b_ls(struct s_opts *opts, const char **filenames)
 	{
 		if((file = get_file(opts, filenames[i], filenames[i])) == NULL)
 			error(filenames[i]);
-		btree_add(file->is_dir ? &dirtree : &filetree, (void*)file, (void*)opts, cmp_files);
+		else
+			btree_add(file->is_dir ? &dirtree : &filetree, (void*)file, (void*)opts, cmp_files);
 		i++;
 	}
 	if (filetree != NULL)
+	{
 		g_traverse(filetree, opts, print_file);
+		btree_free(filetree);
+	}
 	if (dirtree != NULL)
+	{
 		g_traverse(dirtree, opts, b_ls_dir);
-	btree_free(filetree);
-	btree_free(dirtree);
+		btree_free(dirtree);
+	}
 	return (0);
 }

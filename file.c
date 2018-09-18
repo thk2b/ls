@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 10:18:31 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 15:52:34 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 17:23:17 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,7 @@ struct s_file	*get_file(struct s_opts *opts, const char *name, const char *path)
 		return (NULL);
 	file->path = ft_strdup(path);
 	if (stat(path, &st) == -1)
-	{
-		error(path);
 		return (NULL);
-	}
 	file->is_dir = S_ISDIR(st.st_mode);
 	file->name = ft_strdup(name);
 	file->timestamp = st.st_mtime;
