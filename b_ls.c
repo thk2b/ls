@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 09:52:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 16:37:14 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/17 17:16:57 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,18 +39,25 @@ static void	b_ls_dir(void *ctx, void *data)
 	struct s_file	*child_data;
 	char			path[PATH_MAX];
 
+	tree = NULL;
 	opts = (struct s_opts*)ctx;
 	dir_data = (struct s_file*)data;
 	if ((dir = opendir(dir_data->path)) == NULL)
 		return ((void)error(dir_data->path));
+	if (opts->nfiles > 1)
+	{
+		ft_putchar('\n');
+		ft_putstr(dir_data->path);
+		ft_putstr(":\n");
+	}		
 	while ((child = readdir(dir)))
 	{
 		if (opts->all == 0 && child->d_name[0] == '.')
 			continue ;
 		if((child_data = get_file(opts, child->d_name, path_join(path, dir_data->path, child->d_name))) == NULL)
 			return ((void)error(path));
-		// recursive: if child is a dir, call this fn with the file & don't add it to the tree
-		btree_add(&tree, (void*)child_data, (void*)opts, cmp_files);
+		// recursive: if child is a dir, add it to the dir tree and add it to the tree
+			btree_add(&tree, (void*)child_data, (void*)opts, cmp_files);
 	}
 	g_traverse(tree, (void*)opts, print_file);
 	btree_free(tree);
