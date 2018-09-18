@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 09:52:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 18:16:44 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/18 16:43:53 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,8 @@
 #include <limits.h>
 #include <sys/stat.h>
 #include <stdio.h>
-static void	(*g_traverse) (t_btree *root, void *ctx, void(*f)(void *ctx, void *data));
 
-static char	*path_join(char *dst, const char *base, const char *file)
-{
-	ft_memset(dst, 0, ft_strlen(base) + ft_strlen(file) + 2);
-	ft_strcpy(dst, base);
-	ft_strcat(dst, "/");
-	ft_strcat(dst, file);
-	return (dst);
-}
+static void	(*g_traverse) (t_btree *root, void *ctx, void(*f)(void *ctx, void *data));
 
 static void	b_ls_dir(void *ctx, void *data)
 {
@@ -55,7 +47,7 @@ static void	b_ls_dir(void *ctx, void *data)
 	{
 		if (opts->all == 0 && child->d_name[0] == '.')
 			continue ;
-		if((child_data = get_file(opts, child->d_name, path_join(path, dir_data->path, child->d_name))) == NULL)
+		if((child_data = get_file(opts, child->d_name, ft_strcjoin(dir_data->path, '/', child->d_name))) == NULL)
 		{
 			(void)error(path);
 			continue ;

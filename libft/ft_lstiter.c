@@ -1,18 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isascii.c                                       :+:      :+:    :+:   */
+/*   ft_lstiter.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/14 15:46:51 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 20:03:41 by tkobb            ###   ########.fr       */
+/*   Created: 2018/09/17 21:51:50 by tkobb             #+#    #+#             */
+/*   Updated: 2018/09/17 22:19:20 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_isascii(int c)
+void	ft_lstiter(t_list *lst, void (*f)(t_list*))
 {
-	return (c >= 0 && c <= 127);
+	t_list	*node;
+
+	node = lst;
+	while (node)
+	{
+		f(node);
+		node = node->next;
+	}
 }
