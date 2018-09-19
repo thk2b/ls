@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 10:18:31 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/18 16:49:50 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/18 22:14:25 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,13 @@ int					cmp_files(void *ctx, void *d1, void *d2)
 void				print_file(void *ctx, void *vfile)
 {
 	struct s_file	*file;
-
-	(void)ctx;
+	struct s_opts	*opts;
+	opts = (struct s_opts*)ctx;
 	file = (struct s_file*)vfile;
 	ft_putstr(file->repr);
 	ft_putchar('\n');
+	if (file->is_dir && opts->recursive)
+		return ;
 	dealloc_file(file);
 	free(vfile);
 }
