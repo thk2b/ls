@@ -15,7 +15,7 @@ $(NAME): $(OBJ) libft/libft.a
 	gcc -Wall -Werror -Wextra $(OBJ) libft/libft.a -o $(NAME)
 
 libft/libft.a:
-	cd libft && make && make clean
+	make -C ./libft
 
 %.o: %.c
 	gcc -Wall -Wextra -Wall -c $< -o $@
@@ -24,10 +24,10 @@ all: $(NAME)
 
 clean:
 	rm -f $(OBJ)
-	cd libft && make clean
+	make clean -C ./libft
 
 fclean: clean
 	rm -f $(NAME)
-	cd libft && make fclean
+	make fclean -C libft
 
 re: fclean $(NAME)
