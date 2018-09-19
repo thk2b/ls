@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 09:52:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/18 22:22:15 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/19 08:17:22 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	b_ls_dir(void *ctx, void *data)
 	dir_data = (struct s_file*)data;
 	if ((dir = opendir(dir_data->path)) == NULL)
 		return ((void)error(dir_data->path));
-	if (opts->nfiles > 1 || (dir_data->is_dir && opts->recursive))
+	if (opts->nfiles > 1 || (dir_data->is_dir && opts->recursive && ft_strcmp(dir_data->name, ".")))
 	{
 		ft_putchar('\n');
 		ft_putstr(dir_data->path);
