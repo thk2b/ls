@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 09:28:46 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 16:40:51 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/19 08:40:43 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,5 +19,6 @@ int		main(int argc, const char **argv)
 
 	(void)argc;
 	opts = get_opts(argc, argv);
-	return (b_ls(opts, argv + argc - opts->nfiles));
+	// return (b_ls(opts, argv + argc - opts->nfiles));
+	b_ls(opts, argv + argc - opts->nfiles);
 }

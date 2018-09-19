@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 10:18:31 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/18 22:14:25 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/19 08:38:01 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void				print_file(void *ctx, void *vfile)
 	if (file->is_dir && opts->recursive)
 		return ;
 	dealloc_file(file);
-	free(vfile);
+	free(file);
 }
 
 struct s_file	*get_file(struct s_opts *opts, const char *name, const char *path)
@@ -54,11 +54,11 @@ struct s_file	*get_file(struct s_opts *opts, const char *name, const char *path)
 
 	if ((file = (struct s_file*)malloc(sizeof(struct s_file))) == NULL)
 		return (NULL);
-	file->path = ft_strdup(path);
+	file->path = path;
 	if (stat(path, &st) == -1)
 		return (NULL);
 	file->is_dir = S_ISDIR(st.st_mode);
-	file->name = ft_strdup(name);
+	file->name = name;
 	file->timestamp = st.st_mtime;
 	if (opts->l)
 		file->repr = render(file, &st);

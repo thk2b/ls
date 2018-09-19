@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 09:52:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/19 08:17:22 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/19 08:40:34 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static void	b_ls_dir(void *ctx, void *data)
 	{
 		if (opts->all == 0 && child->d_name[0] == '.')
 			continue ;
-		if((child_data = get_file(opts, child->d_name, ft_strcjoin(dir_data->path, '/', child->d_name))) == NULL)
+		if((child_data = get_file(opts, ft_strdup(child->d_name), ft_strcjoin(dir_data->path, '/', child->d_name))) == NULL)
 		{
 			(void)error("child path goes here");
 			continue ;
@@ -79,12 +79,13 @@ int			b_ls(struct s_opts *opts, const char **filenames)
 	struct s_file	*file;
 	t_btree			*filetree;
 	t_btree			*dirtree;
+	char			*filename;
 
 	filetree = NULL;
 	dirtree = NULL;
 	if (opts->nfiles == 0)
 	{
-		if((file = get_file(opts, ".", ".")) == NULL)
+		if((file = get_file(opts, ft_strdup("."), ft_strdup("."))) == NULL)
 			return (error("."));
 		b_ls_dir(opts, file);
 		return (0);
@@ -92,7 +93,7 @@ int			b_ls(struct s_opts *opts, const char **filenames)
 	i = 0;
 	while (i < opts->nfiles)
 	{
-		if((file = get_file(opts, filenames[i], filenames[i])) == NULL)
+		if((file = get_file(opts, ft_strdup(filename), ft_strdup(filename))) == NULL)
 			error(filenames[i]);
 		else
 			btree_add(file->is_dir ? &dirtree : &filetree, (void*)file, (void*)opts, cmp_files);

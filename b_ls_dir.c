@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 14:56:41 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 11:11:17 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/19 08:34:27 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int			b_ls_dir(struct s_opts *opts, const char *dirname)
 			return (1);
 		if (ent->d_name[0] == '.' && opts->all == 0)
 		{
+			dealloc_file(file);
 			free(file);
 			continue ;
 		}
