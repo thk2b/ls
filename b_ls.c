@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/17 09:52:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/19 08:40:34 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/09/22 20:56:48 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ int			b_ls(struct s_opts *opts, const char **filenames)
 	struct s_file	*file;
 	t_btree			*filetree;
 	t_btree			*dirtree;
-	char			*filename;
 
 	filetree = NULL;
 	dirtree = NULL;
@@ -93,7 +92,7 @@ int			b_ls(struct s_opts *opts, const char **filenames)
 	i = 0;
 	while (i < opts->nfiles)
 	{
-		if((file = get_file(opts, ft_strdup(filename), ft_strdup(filename))) == NULL)
+		if((file = get_file(opts, ft_strdup(filenames[i]), ft_strdup(filenames[i]))) == NULL)
 			error(filenames[i]);
 		else
 			btree_add(file->is_dir ? &dirtree : &filetree, (void*)file, (void*)opts, cmp_files);
