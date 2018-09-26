@@ -5,72 +5,84 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/17 10:18:31 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/22 20:57:02 by tkobb            ###   ########.fr       */
+/*   Created: 2018/09/23 11:34:37 by tkobb             #+#    #+#             */
+/*   Updated: 2018/09/25 18:02:39 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
-#include "opts.h"
 #include "file.h"
+#include "error.h"
+#include "lib.h"
+#include "render.h"
+#include <stdlib.h>
 #include <sys/stat.h>
 
-int					cmp_files(void *ctx, void *d1, void *d2)
+t_file		*get_file(t_opts *opts, char *name, char *path)
 {
-	struct s_file	*f1;
-	struct s_file	*f2;
-	struct s_opts	*opts;
-	int				cmp;
+	t_file		*file;
+	struct stat	buf;
 
-	f1 = (struct s_file*)d1;
-	f2 = (struct s_file*)d2;
-	opts = (struct s_opts*)ctx;
-	cmp = 0;
-	if (opts->sort == SORT_TIME)
-		cmp = (int)f2->timestamp - (int)f1->timestamp;
-		if (cmp != 0)
-			return (cmp);
-	return (ft_strcmp(f1->path, f2->path));
-}
-
-void				print_file(void *ctx, void *vfile)
-{
-	struct s_file	*file;
-	struct s_opts	*opts;
-	opts = (struct s_opts*)ctx;
-	file = (struct s_file*)vfile;
-	ft_putstr(file->repr);
-	ft_putchar('\n');
-	if (file->is_dir && opts->recursive)
-		return ;
-	dealloc_file(file);
-	free(file);
-}
-
-struct s_file	*get_file(struct s_opts *opts, const char *name, const char *path)
-{
-	struct s_file	*file;
-	struct stat		st;
-
-	if ((file = (struct s_file*)malloc(sizeof(struct s_file))) == NULL)
+	if ((file = (t_file*)malloc(sizeof(t_file))) == NULL)
 		return (NULL);
-	file->path = path;
-	if (stat(path, &st) == -1)
+	if (lstat(path, &buf) == -1)
+	{
+		error(path);
 		return (NULL);
-	file->is_dir = S_ISDIR(st.st_mode);
+	}
 	file->name = name;
-	file->timestamp = st.st_mtime;
-	if (opts->l)
-		file->repr = render(file, &st);
+	file->path = path;
+	file->time = buf.st_mtime;
+	file->is_dir = S_ISDIR(buf.st_mode);
+	file->blocks = buf.st_blocks;
+	file->in_blocks = 0;
+	if (opts->show_long)
+		file->repr = pre_render_file_long(file, &buf);
 	else
 		file->repr = file->name;
 	return (file);
 }
 
-void			dealloc_file(struct s_file *file)
+int			cmp_files(void *v_opts, void *v_file1, void *v_file2)
 {
-	if (file->repr != file->name)
-		free((char*)file->repr);
-	free((char*)file->name);
-	free((char*)file->path);
+	t_opts	*opts;
+	t_file	*file1;
+	t_file	*file2;
+	int		cmp;
+
+	opts = (t_opts*)v_opts;
+	file1 = (t_file *)v_file1;
+	file2 = (t_file *)v_file2;
+	if (opts->sort == SORT_TIME)
+		if ((cmp = file2->time - file1->time) != 0)
+			return (cmp);
+	return (ft_strcmp(file1->name, file2->name));
+}
+
+void		free_file(void *ctx, void *v_file)
+{
+	t_file	*file;
+
+	(void)ctx;
+	file = (t_file*)v_file;
+	if (file->name != file->repr)
+		free(file->repr);
+	free(file->name);
+	free(file->path);
+	free(file);
+}
+
+void		free_file_only(void *ctx, void *v_file)
+{
+	t_file	*file;
+
+	(void)ctx;
+	file = (t_file*)v_file;
+	if (file->is_dir)
+		return ;
+	if (file->name != file->repr)
+		free(file->repr);
+	file = (t_file*)v_file;
+	free(file->name);
+	free(file->path);
+	free(v_file);
 }

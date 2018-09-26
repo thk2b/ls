@@ -1,33 +1,35 @@
 NAME = b_ls
 
 SRC =\
+	lib.c\
 	error.c\
-	get_opts.c\
-	btree.c\
-	file.c\
+	render_utils.c\
 	render.c\
+	btree.c\
+	opts.c\
+	file.c\
+	b_ls_dir.c\
 	b_ls.c\
-	main.c
+	main.c\
 
 OBJ = $(SRC:.c=.o)
 
-$(NAME): $(OBJ) libft/libft.a
-	gcc -Wall -Werror -Wextra $(OBJ) libft/libft.a -o $(NAME)
+CC = gcc
 
-libft/libft.a:
-	make -C ./libft
+FLAGS = -Wall -Wextra -Werror
+
+$(NAME): $(OBJ)
+	$(CC) $(FLAGS) $(OBJ) -o $(NAME)
 
 %.o: %.c
-	gcc -Wall -Wextra -Wall -c $< -o $@
+	$(CC) $(FLAGS) -o $@ -c $<
 
 all: $(NAME)
 
 clean:
 	rm -f $(OBJ)
-	make clean -C ./libft
 
 fclean: clean
 	rm -f $(NAME)
-	make fclean -C libft
 
-re: fclean $(NAME)
+re: fclean all

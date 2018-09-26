@@ -5,20 +5,24 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/15 09:28:46 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/19 08:40:43 by tkobb            ###   ########.fr       */
+/*   Created: 2018/09/23 11:09:26 by tkobb             #+#    #+#             */
+/*   Updated: 2018/09/25 18:37:21 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "b_ls.h"
-#include "file.h"
+#include "opts.h"
+#include "error.h"
+#include <stdlib.h>
+#include <errno.h>
 
-int		main(int argc, const char **argv)
+int		main(int ac, char **av)
 {
-	struct s_opts	*opts;
+	t_opts	*opts;
 
-	(void)argc;
-	opts = get_opts(argc, argv);
-	// return (b_ls(opts, argv + argc - opts->nfiles));
-	b_ls(opts, argv + argc - opts->nfiles);
+	if ((opts = get_opts(ac, av)) == NULL)
+		return (error(NULL));
+	b_ls(opts, av + (ac - opts->nfiles));
+	free(opts);
+	return (errno);
 }

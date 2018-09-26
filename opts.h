@@ -5,30 +5,30 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/17 10:40:22 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 16:27:04 by tkobb            ###   ########.fr       */
+/*   Created: 2018/09/23 11:20:33 by tkobb             #+#    #+#             */
+/*   Updated: 2018/09/25 14:32:46 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef OPTS_H
 # define OPTS_H
 
-enum	e_sort_flags
+enum			e_sort
 {
-	SORT_NAME,
-	SORT_TIME
+	SORT_NAME, SORT_TIME
 };
 
-struct			s_opts
+typedef struct	s_opts
 {
-	enum e_sort_flags	sort;
-	unsigned int		rev;
-	unsigned int		l;
-	unsigned int		all;
-	unsigned int		recursive;
-	unsigned int		nfiles;
-};
+	enum e_sort	sort;
+	int			nfiles;
+	short		sort_rev;
+	short		show_long;
+	short		recursive;
+	short		show_all;
+	short		show_dir_header;
+}				t_opts;
 
-struct s_opts	*get_opts(int ac, const char **av);
+t_opts			*get_opts(int ac, char **av);
 
 #endif

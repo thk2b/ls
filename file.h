@@ -5,31 +5,31 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/17 10:15:32 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 15:50:24 by tkobb            ###   ########.fr       */
+/*   Created: 2018/09/23 11:27:06 by tkobb             #+#    #+#             */
+/*   Updated: 2018/09/25 18:19:02 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FILE_H
 # define FILE_H
-# include "b_ls.h"
 # include "opts.h"
 # include <time.h>
 # include <sys/stat.h>
 
-struct			s_file
+typedef struct	s_file
 {
-	const char	*name;
-	const char	*path;
-	time_t		timestamp;
-	const char	*repr;
-	int			is_dir;
-};
+	char		*name;
+	char		*path;
+	time_t		time;
+	char		*repr;
+	short		is_dir;
+	blkcnt_t	blocks;
+	blkcnt_t	in_blocks;
+}				t_file;
 
-int				cmp_files(void *ctx, void *d1, void *d2);
-void			print_file(void *ctx, void *data);
-const char		*render(struct s_file *file, struct stat *s);
-struct s_file	*get_file(struct s_opts *opts, const char *name, const char *path);
-void			dealloc_file(struct s_file *file);
+t_file			*get_file(t_opts *opts, char *name, char *path);
+int				cmp_files(void *v_ctx, void *v_file1, void *v_file2);
+void			free_file(void *ctx, void *v_file);
+void			free_file_only(void *ctx, void *v_file);
 
 #endif

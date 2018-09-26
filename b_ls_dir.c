@@ -5,72 +5,90 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/15 14:56:41 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/19 08:34:27 by tkobb            ###   ########.fr       */
+/*   Created: 2018/09/25 19:16:00 by tkobb             #+#    #+#             */
+/*   Updated: 2018/09/25 19:29:39 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "b_ls.h"
 #include "btree.h"
+#include "b_ls.h"
+#include "opts.h"
 #include "file.h"
-#include "libft/libft.h"
-#include <dirent.h>
+#include "lib.h"
+#include "error.h"
 #include <stdlib.h>
+#include <dirent.h>
+#include <printf.h>
 #include <sys/stat.h>
-#include <limits.h>
-#include <time.h>
 
-static char	*path_join(char *dst, const char *base, const char *file)
+static int		should_recurse(t_file *file, t_opts *opts)
 {
-	ft_memset(dst, 0, ft_strlen(base) + ft_strlen(file) + 2);
-	ft_strcpy(dst, base);
-	ft_strcat(dst, "/");
-	ft_strcat(dst, file);
-	return (dst);
+	if (file->is_dir == 0 || opts->recursive == 0)
+		return (0);
+	if (file->name[0] == '.')
+	{
+		if (file->name[1] == 0 || file->name[1] == '.')
+			return (0);
+		return (opts->show_all);
+	}
+	return (opts->recursive);
 }
 
-static int	(*g_cmp) (void *s1, void *s2);
-
-int			b_ls_dir(struct s_opts *opts, const char *dirname)
+static blkcnt_t	get_files(t_file *dir, t_opts *opts,
+	t_btree **tree, t_btree **rtree)
 {
-	DIR				*dir;
-	char			path[PATH_MAX];
+	DIR				*std_dir;
 	struct dirent	*ent;
-	struct s_file	*file;
-	struct stat		st;
-	t_btree			*root;
+	t_file			*file;
+	char			*path;
+	blkcnt_t		blocks;
 
-	ft_bzero(path, PATH_MAX);
-	g_cmp = opts->sort == SORT_TIME ? cmp_time : cmp_name;
-	if ((dir = opendir(dirname)) == NULL)
-		return (error(dirname));
-	while ((ent = readdir(dir)))
+	blocks = 0;
+	if ((std_dir = opendir(dir->path)) == NULL)
+		return (error(dir->path) && 0);
+	while ((ent = readdir(std_dir)) != NULL)
 	{
-		if ((file = file_new()) == NULL)
-			return (1);
-		if (ent->d_name[0] == '.' && opts->all == 0)
-		{
-			dealloc_file(file);
-			free(file);
+		if (ent->d_name[0] == '.' && opts->show_all == 0)
 			continue ;
-		}
-		if (stat(path_join(path, dirname, ent->d_name), &st) == -1)
-		{
-			error(ent->d_name);
+		if ((path = ft_strcjoin(dir->path, '/', ent->d_name)) == NULL)
+			return (error(NULL) && 0);
+		if ((file = get_file(opts, ft_strdup(ent->d_name), path)) == NULL)
 			continue ;
-		}
-		file->name = ent->d_name;
-		file->repr = NULL;
-		file->timestamp = st.st_mtime;
-		if (opts->l)
-			file->repr = render(file, &st);
-		btree_add(&root, (void*)file, g_cmp);
+		btree_add(tree, opts, (void*)file, cmp_files);
+		if (should_recurse(file, opts))
+			btree_add(rtree, opts, (void*)file, cmp_files);
+		if (opts->show_long)
+			blocks += file->blocks;
 	}
-	if (opts->rev)
-		btree_in_back_order(root, print_file);
-	else
-		btree_in_order(root, print_file);
-	btree_free(root);
-	closedir(dir);
-	return (0);
+	closedir(std_dir);
+	return (blocks);
+}
+
+void			b_ls_dir(void *v_opts, void *v_dir)
+{
+	t_btree			*tree;
+	t_btree			*rtree;
+	t_opts			*opts;
+	blkcnt_t		blocks;
+
+	opts = (t_opts*)v_opts;
+	tree = NULL;
+	rtree = NULL;
+	blocks = get_files((t_file*)v_dir, opts, &tree, &rtree);
+	if (opts->show_dir_header)
+		printf("\n%s:\n", ((t_file*)v_dir)->path);
+	if (opts->show_long)
+		printf("total %lld\n", blocks);
+	if (opts->recursive)
+	{
+		traverse(tree, v_opts, b_ls_file);
+		opts->show_dir_header = 1;
+		traverse(rtree, v_opts, b_ls_dir);
+		btree_free(rtree, v_opts, free_file_only);
+		btree_free(tree, v_opts, free_file);
+		return ;
+	}
+	traverse(tree, v_opts, b_ls_file);
+	btree_free(tree, v_opts, free_file);
 }

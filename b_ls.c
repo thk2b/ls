@@ -5,108 +5,79 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/17 09:52:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/22 20:56:48 by tkobb            ###   ########.fr       */
+/*   Created: 2018/09/23 13:16:36 by tkobb             #+#    #+#             */
+/*   Updated: 2018/09/25 19:35:48 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
 #include "btree.h"
-#include "file.h"
 #include "b_ls.h"
+#include "opts.h"
+#include "file.h"
+#include "lib.h"
+#include "error.h"
+#include <stdlib.h>
 #include <dirent.h>
-#include <limits.h>
+#include <printf.h>
 #include <sys/stat.h>
-#include <stdio.h>
 
-static void	traverse(t_btree *root, void *ctx, void(*f)(void *ctx, void *data))
+void		traverse(t_btree *root, void *v_opts, t_btree_fn f)
 {
-	if (((struct s_opts *)ctx)->rev)
-		return btree_in_back_order(root, ctx, f);
-	return btree_in_order(root, ctx, f);
+	t_opts	*opts;
+
+	opts = (t_opts*)v_opts;
+	if (opts->sort_rev)
+		btree_back_inorder(root, (void*)opts, f);
+	else
+		btree_inorder(root, (void*)opts, f);
 }
 
-static void	b_ls_dir(void *ctx, void *data)
+void		b_ls_file(void *v_opts, void *v_file)
 {
-	struct s_opts	*opts;
-	struct s_file	*dir_data;
-	t_btree			*tree;
-	t_btree			*recursive_tree;
-	DIR				*dir;
-	struct dirent	*child;
-	struct s_file	*child_data;
+	t_opts	*opts;
+	t_file	*file;
 
-	tree = NULL;
-	recursive_tree = NULL;
-	opts = (struct s_opts*)ctx;
-	dir_data = (struct s_file*)data;
-	if ((dir = opendir(dir_data->path)) == NULL)
-		return ((void)error(dir_data->path));
-	if (opts->nfiles > 1 || (dir_data->is_dir && opts->recursive && ft_strcmp(dir_data->name, ".")))
-	{
-		ft_putchar('\n');
-		ft_putstr(dir_data->path);
-		ft_putstr(":\n");
-	}		
-	while ((child = readdir(dir)))
-	{
-		if (opts->all == 0 && child->d_name[0] == '.')
-			continue ;
-		if((child_data = get_file(opts, ft_strdup(child->d_name), ft_strcjoin(dir_data->path, '/', child->d_name))) == NULL)
-		{
-			(void)error("child path goes here");
-			continue ;
-		}
-		if (opts->recursive && child_data->is_dir && child_data->name[0] != '.')
-			btree_add(&recursive_tree, (void*)child_data, (void*)opts, cmp_files);
-		btree_add(&tree, (void*)child_data, (void*)opts, cmp_files);
-	}
-	closedir(dir);
-	traverse(tree, (void*)opts, print_file);
-	btree_free(tree);
-	if (recursive_tree)
-	{
-		traverse(recursive_tree, (void*)opts, b_ls_dir);
-		btree_free(recursive_tree);
-	}
-	dealloc_file(dir_data);
-	free(dir_data);
+	opts = (t_opts*)v_opts;
+	file = (t_file*)v_file;
+	printf("%s\n", file->repr);
 }
 
-int			b_ls(struct s_opts *opts, const char **filenames)
+static void	b_ls_dot(t_opts *opts)
 {
-	size_t			i;
-	struct s_file	*file;
-	t_btree			*filetree;
-	t_btree			*dirtree;
+	t_file *file;
 
-	filetree = NULL;
-	dirtree = NULL;
+	if ((file = get_file(opts, ft_strdup("."), ft_strdup("."))) == NULL)
+		return ((void)error("."));
+	b_ls_dir((void*)opts, (void*)file);
+	free_file((void*)opts, (void*)file);
+	return ;
+}
+
+void		b_ls(t_opts *opts, char **filenames)
+{
+	t_btree		*files;
+	t_btree		*dirs;
+	t_file		*file;
+	int			i;
+
+	files = NULL;
+	dirs = NULL;
 	if (opts->nfiles == 0)
-	{
-		if((file = get_file(opts, ft_strdup("."), ft_strdup("."))) == NULL)
-			return (error("."));
-		b_ls_dir(opts, file);
-		return (0);
-	}
+		return ((void)b_ls_dot(opts));
 	i = 0;
 	while (i < opts->nfiles)
 	{
-		if((file = get_file(opts, ft_strdup(filenames[i]), ft_strdup(filenames[i]))) == NULL)
-			error(filenames[i]);
+		file = get_file(opts, ft_strdup(filenames[i]), ft_strdup(filenames[i]));
+		if (file == NULL)
+			continue ;
+		else if (file->is_dir)
+			btree_add(&dirs, (void*)opts, (void*)file, cmp_files);
 		else
-			btree_add(file->is_dir ? &dirtree : &filetree, (void*)file, (void*)opts, cmp_files);
+			btree_add(&files, (void*)opts, (void*)file, cmp_files);
 		i++;
 	}
-	if (filetree != NULL)
-	{
-		traverse(filetree, (void*)opts, print_file);
-		btree_free(filetree);
-	}
-	if (dirtree != NULL)
-	{
-		traverse(dirtree, (void*)opts, b_ls_dir);
-		btree_free(dirtree);
-	}
-	return (0);
+	traverse(files, (void*)opts, b_ls_file);
+	btree_free(files, (void*)opts, free_file);
+	traverse(dirs, (void*)opts, b_ls_dir);
+	btree_free(dirs, (void*)opts, free_file);
 }

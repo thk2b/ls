@@ -1,25 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   b_ls.h                                             :+:      :+:    :+:   */
+/*   render_utils.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/23 11:18:53 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/25 19:17:45 by tkobb            ###   ########.fr       */
+/*   Created: 2018/09/25 18:27:12 by tkobb             #+#    #+#             */
+/*   Updated: 2018/09/25 18:29:44 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef B_LS_H
-# define B_LS_H
-# include "opts.h"
-# include "btree.h"
+#ifndef RENDER_UTILS_H
+# define RENDER_UTILS_H
+# include <sys/stat.h>
+# include "file.h"
 
-# define ALLOC_CHECK(p) if((p) == NULL) return (-1)
-
-void	b_ls(t_opts *opts, char **filename);
-void	b_ls_file(void *opts, void *file);
-void	b_ls_dir(void *opts, void *dir);
-void	traverse(t_btree *root, void *v_opts, t_btree_fn f);
+char	*perms(mode_t m);
+char	*user(uid_t i);
+char	*group(gid_t i);
+char	*get_time(time_t *t);
+char	*get_link(t_file *file, struct stat *st);
 
 #endif

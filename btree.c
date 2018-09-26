@@ -5,63 +5,69 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/09/15 19:13:07 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 15:53:13 by tkobb            ###   ########.fr       */
+/*   Created: 2018/09/23 13:12:23 by tkobb             #+#    #+#             */
+/*   Updated: 2018/09/25 18:04:55 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "btree.h"
+#include <stdlib.h>
 
 t_btree	*btree_new(void *data)
 {
-	t_btree *node;
+	t_btree	*root;
 
-	if ((node = (t_btree*)malloc(sizeof(t_btree))) == NULL)
+	if ((root = (t_btree*)malloc(sizeof(t_btree))) == NULL)
 		return (NULL);
-	node->right = NULL;
-	node->left = NULL;
-	node->data = data;
-	return (node);
+	root->left = NULL;
+	root->right = NULL;
+	root->data = data;
+	return (root);
 }
 
-t_btree	*btree_add(t_btree **root, void *data, void *ctx, int (*cmp)(void *ctx, void*, void*))
+void	btree_add(t_btree **root, void *ctx, void *data,
+	t_btree_cmpfn cmp)
 {
-	t_btree	**curr;
+	t_btree	**nodep;
 
-	if (*root == NULL)
-		return (*root = btree_new(data));
-	curr = root;
-	while (*curr != NULL)
-		if (cmp(ctx, data, (*curr)->data) > 0)
-			curr = &(*curr)->right;
+	nodep = root;
+	while (*nodep)
+	{
+		if (cmp(ctx, data, (*nodep)->data) > 0)
+			nodep = &(*nodep)->right;
 		else
-			curr = &(*curr)->left;
-	return (*curr = btree_new(data));
+			nodep = &(*nodep)->left;
+	}
+	*nodep = btree_new(data);
 }
 
-void	btree_in_order(t_btree *root, void *ctx, void (*f)(void*, void*))
+void	btree_inorder(t_btree *root, void *ctx,
+	t_btree_fn f)
 {
 	if (root == NULL)
 		return ;
-	btree_in_order(root->left, ctx, f);
+	btree_inorder(root->left, ctx, f);
 	f(ctx, root->data);
-	btree_in_order(root->right, ctx, f);
+	btree_inorder(root->right, ctx, f);
 }
 
-void	btree_in_back_order(t_btree *root, void *ctx, void (*f)(void*, void*))
+void	btree_back_inorder(t_btree *root, void *ctx,
+	t_btree_fn f)
 {
 	if (root == NULL)
 		return ;
-	btree_in_back_order(root->right, ctx, f);
+	btree_back_inorder(root->right, ctx, f);
 	f(ctx, root->data);
-	btree_in_back_order(root->left, ctx, f);
+	btree_back_inorder(root->left, ctx, f);
 }
 
-void	btree_free(t_btree *root)
+void	btree_free(t_btree *root, void *ctx,
+	t_btree_freefn del)
 {
 	if (root == NULL)
 		return ;
-	btree_free(root->right);
+	btree_free(root->left, ctx, del);
+	btree_free(root->right, ctx, del);
+	del(ctx, root->data);
 	free(root);
-	btree_free(root->left);
 }
