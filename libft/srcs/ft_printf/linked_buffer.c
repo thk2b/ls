@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/10/04 19:35:40 by tkobb             #+#    #+#             */
-/*   Updated: 2018/10/10 16:18:22 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/09 21:43:18 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void				lbuf_add(t_lbuf_head **head, char *data, size_t len)
 static void			join_blocks(t_lbuf_block *block, char **cur, size_t *len)
 {
 	size_t			cur_len;
+	t_lbuf_block	*next;
 
 	while (block)
 	{
@@ -67,8 +68,9 @@ static void			join_blocks(t_lbuf_block *block, char **cur, size_t *len)
 			*cur += cur_len;
 		}
 		free(block->data);
+		next = block->next;
 		free(block);
-		block = block->next;
+		block = next;
 	}
 }
 
