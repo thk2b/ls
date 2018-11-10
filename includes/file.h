@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 11:27:06 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/25 18:19:02 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/10 00:39:46 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct	s_file
 	char		*repr;
 	short		is_dir;
 	blkcnt_t	blocks;
-	blkcnt_t	in_blocks;
+	off_t		size;
 }				t_file;
 
 t_file			*get_file(t_opts *opts, char *name, char *path);
