@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 14:53:06 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/10 00:25:24 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/10 00:46:33 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static int	pre_render_file(char **s, t_file *file,
 		perms, statbuf->st_nlink,
 		user(statbuf->st_uid), group(statbuf->st_gid),
 		statbuf->st_size,
-		get_time(&file->time),
+		get_time(&file->time.tv_sec),
 		file->name, link), 1);
 	free(link);
 	return (0);
@@ -46,7 +46,7 @@ static int	pre_render_device(char **s, t_file *file,
 		perms, statbuf->st_nlink,
 		user(statbuf->st_uid), group(statbuf->st_gid),
 		mj,
-		get_time(&file->time),
+		get_time(&file->time.tv_sec),
 		file->name, link), 1);
 	free(mj);
 	free(link);

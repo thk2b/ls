@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 11:34:37 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/10 00:39:52 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/10 00:48:24 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_file		*get_file(t_opts *opts, char *name, char *path)
 	}
 	file->name = name;
 	file->path = path;
-	file->time = buf.st_mtime;
+	file->time = buf.st_mtimespec;
 	file->size = buf.st_size;
 	file->is_dir = S_ISDIR(buf.st_mode);
 	file->blocks = buf.st_blocks;
@@ -58,8 +58,12 @@ int			cmp_files(void *v_opts, void *v_file1, void *v_file2)
 			return (cmp);
 	}
 	else if (opts->sort & SORT_TIME)
-		if ((cmp = file2->time - file1->time) != 0)
+	{
+		if ((cmp = file2->time.tv_sec - file1->time.tv_sec))
 			return (cmp);
+		else if ((cmp = file2->time.tv_nsec - file1->time.tv_nsec))
+			return (cmp);
+	}
 	return (ft_strcmp(file1->name, file2->name));
 }
 
