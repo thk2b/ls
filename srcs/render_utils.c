@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 18:26:48 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/09 20:50:39 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/09 21:59:05 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 
 char	*perms(mode_t m)
 {
-	char s[11];
+	char *s;
 	char type;
 
 	type = '-';
@@ -30,7 +30,7 @@ char	*perms(mode_t m)
 		type = 'd';
 	else if (S_ISLNK(m))
 		type = 'l';
-	ft_snprintf(s, 11, "%c%c%c%c%c%c%c%c%c%c",
+	MCK(ft_asprintf(&s, "%c%c%c%c%c%c%c%c%c%c",
 		type,
 		m & S_IRUSR ? 'r' : '-',
 		m & S_IWUSR ? 'w' : '-',
@@ -40,9 +40,9 @@ char	*perms(mode_t m)
 		m & S_IXGRP ? 'x' : '-',
 		m & S_IROTH ? 'r' : '-',
 		m & S_IWOTH ? 'w' : '-',
-		m & S_IXOTH ? 'x' : '-');
-	s[10] = 0;
-	return (ft_strdup(s));
+		m & S_IXOTH ? 'x' : '-'), NULL);
+	s[10] = '\0';
+	return (s);
 }
 
 char	*user(uid_t i)
@@ -82,7 +82,6 @@ char	*get_link(t_file *file, struct stat *st)
 {
 	char	*s;
 	char	name[PATH_MAX];
-	size_t	len;
 
 	s = NULL;
 	if (!S_ISLNK(st->st_mode))
@@ -92,9 +91,6 @@ char	*get_link(t_file *file, struct stat *st)
 		error(file->path);
 		return (NULL);
 	}
-	len = ft_snprintf(s, 0, " -> %s", name);
-	if ((s = (char*)malloc((len + 1 * sizeof(char)))) == NULL)
-		return (NULL);
-	ft_snprintf(s, len + 1, " -> %s", name);
+	MCK(ft_asprintf(&s, " -> %s", name), NULL);
 	return (s);
 }

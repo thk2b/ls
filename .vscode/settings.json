@@ -3,6 +3,7 @@
 		"btree.h": "c",
 		"ft_printf.h": "c",
 		"render.h": "c",
-		"stdlib.h": "c"
+		"stdlib.h": "c",
+		"render_utils.h": "c"
 	}
 }

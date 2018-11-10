@@ -6,7 +6,7 @@ SRC = $(addprefix srcs/, error.c render_utils.c render.c btree.c opts.c file.c l
 OBJ = $(SRC:.c=.o)
 
 CC = gcc
-FLAGS = -Wall -Wextra -Werror
+FLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 
 $(NAME): $(OBJ) $(LIBFT)
 	$(CC) $(FLAGS) $(INC) $(OBJ) $(LIBFT) -o $(NAME)
