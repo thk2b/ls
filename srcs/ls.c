@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 13:16:36 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/09 22:21:16 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/09 23:27:46 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,13 +68,13 @@ void		ls(t_opts *opts, char **filenames)
 	while (i < opts->nfiles)
 	{
 		file = get_file(opts, ft_strdup(filenames[i]), ft_strdup(filenames[i]));
+		i++;
 		if (file == NULL)
 			continue ;
 		else if (file->is_dir)
 			btree_add(&dirs, (void*)opts, (void*)file, cmp_files);
 		else
 			btree_add(&files, (void*)opts, (void*)file, cmp_files);
-		i++;
 	}
 	traverse(files, (void*)opts, ls_file);
 	btree_free(files, (void*)opts, free_file);
