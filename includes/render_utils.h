@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 18:27:12 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/25 18:29:44 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/10 00:08:53 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,6 @@ char	*user(uid_t i);
 char	*group(gid_t i);
 char	*get_time(time_t *t);
 char	*get_link(t_file *file, struct stat *st);
+char	*maj_min(dev_t dev);
 
 #endif

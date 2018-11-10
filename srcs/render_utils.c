@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 18:26:48 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/09 23:22:13 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/10 00:19:42 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include <pwd.h>
 #include <limits.h>
 #include <grp.h>
+#include <sys/types.h>
 
 static char	get_file_type(mode_t m)
 {
@@ -32,8 +33,10 @@ static char	get_file_type(mode_t m)
 		return ('p');
 	if (S_ISSOCK(m))
 		return ('s');
-	if (S_ISBLK(m))
+	if (S_ISCHR(m))
 		return ('c');
+	if (S_ISBLK(m))
+		return ('b');
 	return ('-');
 }
 
@@ -118,4 +121,13 @@ char		*get_link(t_file *file, struct stat *st)
 	}
 	MCK(ft_asprintf(&s, " -> %s", name), NULL);
 	return (s);
+}
+
+char		*maj_min(dev_t dev)
+{
+	char	*s;
+
+	s = NULL;
+	ft_asprintf(&s, "%3d, %3d", major(dev), minor(dev));
+return (s);
 }
