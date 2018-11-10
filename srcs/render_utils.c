@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 18:26:48 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/09 22:07:02 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/09 22:42:01 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,16 +20,29 @@
 #include <limits.h>
 #include <grp.h>
 
+static char	get_file_type(mode_t m)
+{
+	if (S_ISREG(m))
+		return ('-');
+	if (S_ISDIR(m))
+		return ('d');
+	if (S_ISLNK(m))
+		return ('l');
+	if (S_ISFIFO(m))
+		return ('p');
+	if (S_ISSOCK(m))
+		return ('s');
+	if (S_ISBLK(m))
+		return ('c');
+	return ('-');
+}
+
 char	*perms(mode_t m)
 {
 	char *s;
 	char type;
 
-	type = '-';
-	if (S_ISDIR(m))
-		type = 'd';
-	else if (S_ISLNK(m))
-		type = 'l';
+	type = get_file_type(m);
 	MCK(ft_asprintf(&s, "%c%c%c%c%c%c%c%c%c%c",
 		type,
 		m & S_IRUSR ? 'r' : '-',
