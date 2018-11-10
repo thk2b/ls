@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   b_ls.c                                             :+:      :+:    :+:   */
+/*   ls.c                                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 13:16:36 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/09 20:56:37 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/09 22:21:16 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <btree.h>
-#include <b_ls.h>
+#include <ls.h>
 #include <opts.h>
 #include <file.h>
 #include <libft.h>
@@ -32,7 +32,7 @@ void		traverse(t_btree *root, void *v_opts, t_btree_fn f)
 		btree_inorder(root, (void*)opts, f);
 }
 
-void		b_ls_file(void *v_opts, void *v_file)
+void		ls_file(void *v_opts, void *v_file)
 {
 	t_opts	*opts;
 	t_file	*file;
@@ -42,18 +42,18 @@ void		b_ls_file(void *v_opts, void *v_file)
 	ft_printf("%s\n", file->repr);
 }
 
-static void	b_ls_dot(t_opts *opts)
+static void	ls_dot(t_opts *opts)
 {
 	t_file *file;
 
 	if ((file = get_file(opts, ft_strdup("."), ft_strdup("."))) == NULL)
 		return ((void)error("."));
-	b_ls_dir((void*)opts, (void*)file);
+	ls_dir((void*)opts, (void*)file);
 	free_file((void*)opts, (void*)file);
 	return ;
 }
 
-void		b_ls(t_opts *opts, char **filenames)
+void		ls(t_opts *opts, char **filenames)
 {
 	t_btree		*files;
 	t_btree		*dirs;
@@ -63,7 +63,7 @@ void		b_ls(t_opts *opts, char **filenames)
 	files = NULL;
 	dirs = NULL;
 	if (opts->nfiles == 0)
-		return ((void)b_ls_dot(opts));
+		return ((void)ls_dot(opts));
 	i = 0;
 	while (i < opts->nfiles)
 	{
@@ -76,8 +76,8 @@ void		b_ls(t_opts *opts, char **filenames)
 			btree_add(&files, (void*)opts, (void*)file, cmp_files);
 		i++;
 	}
-	traverse(files, (void*)opts, b_ls_file);
+	traverse(files, (void*)opts, ls_file);
 	btree_free(files, (void*)opts, free_file);
-	traverse(dirs, (void*)opts, b_ls_dir);
+	traverse(dirs, (void*)opts, ls_dir);
 	btree_free(dirs, (void*)opts, free_file);
 }

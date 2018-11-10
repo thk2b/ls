@@ -6,13 +6,12 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 19:16:00 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/09 20:56:19 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/09 22:21:02 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <b_ls.h>
 #include <btree.h>
-#include <b_ls.h>
+#include <ls.h>
 #include <opts.h>
 #include <file.h>
 #include <libft.h>
@@ -65,7 +64,7 @@ static blkcnt_t	get_files(t_file *dir, t_opts *opts,
 	return (blocks);
 }
 
-void			b_ls_dir(void *v_opts, void *v_dir)
+void			ls_dir(void *v_opts, void *v_dir)
 {
 	t_btree			*tree;
 	t_btree			*rtree;
@@ -82,13 +81,13 @@ void			b_ls_dir(void *v_opts, void *v_dir)
 		ft_printf("total %lld\n", blocks);
 	if (opts->recursive)
 	{
-		traverse(tree, v_opts, b_ls_file);
+		traverse(tree, v_opts, ls_file);
 		opts->show_dir_header = 1;
-		traverse(rtree, v_opts, b_ls_dir);
+		traverse(rtree, v_opts, ls_dir);
 		btree_free(rtree, v_opts, free_file_only);
 		btree_free(tree, v_opts, free_file);
 		return ;
 	}
-	traverse(tree, v_opts, b_ls_file);
+	traverse(tree, v_opts, ls_file);
 	btree_free(tree, v_opts, free_file);
 }

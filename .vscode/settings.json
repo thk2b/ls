@@ -4,6 +4,8 @@
 		"ft_printf.h": "c",
 		"render.h": "c",
 		"stdlib.h": "c",
-		"render_utils.h": "c"
+		"render_utils.h": "c",
+		"opts.h": "c",
+		"ls.h": "c"
 	}
 }

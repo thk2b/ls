@@ -2,7 +2,7 @@ NAME = ft_ls
 LIBFT = libft/libft.a
 
 INC = -I libft/includes -I ./includes
-SRC = $(addprefix srcs/, error.c render_utils.c render.c btree.c opts.c file.c ls_dir.c b_ls.c main.c)
+SRC = $(addprefix srcs/, error.c render_utils.c render.c btree.c opts.c file.c ls_dir.c ls.c main.c)
 OBJ = $(SRC:.c=.o)
 
 CC = gcc
