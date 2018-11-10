@@ -1,5 +1,8 @@
 {
 	"files.associations": {
-		"btree.h": "c"
+		"btree.h": "c",
+		"ft_printf.h": "c",
+		"render.h": "c",
+		"stdlib.h": "c"
 	}
 }

@@ -2,7 +2,23 @@ NAME = libft.a
 
 FLAGS = -Wall -Wextra -Werror
 
-SRCS = ft_memset.c\
+SRCDIR = srcs
+INCLUDEDIR = includes
+
+LINKED_LIST_SRCS = $(addprefix linked_list/, llist_new.c llist_free.c llist_push.c llist_shift.c llist_find.c llist_remove.c)
+HASH_MAP_SRCS = $(addprefix hash_map/, hash_ascii.c hm_new.c hm_find.c hm_free.c hm_insert.c hm_new.c hm_remove.c hm_foreach.c hm_reduce.c)
+QUEUE_SRCS = $(addprefix queue/, queue_new.c queue_free.c queue_add.c queue_pop.c)
+PRIORITY_QUEUE_SRCS = $(addprefix priority_queue/, pq_new.c pq_free.c pq_add.c pq_get.c pq_pop.c)
+ENV_SRCS = $(addprefix env/, ft_getenv.c ft_setenv.c ft_putenv.c ft_unsetenv.c)
+FT_PRINTF_SRCS = $(addprefix ft_printf/, parse_utils.c style.c parse.c linked_buffer.c convert_utils.c set_digits.c convert_num.c convert_str.c convert_wstr.c convert_percent.c convert.c get_len.c ft_asprintf.c ft_sprintf.c ft_printf.c)
+SRCS = $(addprefix $(SRCDIR)/,\
+	$(LINKED_LIST_SRCS)\
+	$(HASH_MAP_SRCS)\
+	$(QUEUE_SRCS)\
+	$(PRIORITY_QUEUE_SRCS)\
+	$(ENV_SRCS)\
+	$(FT_PRINTF_SRCS)\
+	ft_memset.c\
 	ft_bzero.c\
 	ft_memcpy.c\
 	ft_memccpy.c\
@@ -11,6 +27,7 @@ SRCS = ft_memset.c\
 	ft_memcmp.c\
 	ft_strlen.c\
 	ft_strdup.c\
+	ft_strndup.c\
 	ft_strcpy.c\
 	ft_strncpy.c\
 	ft_strcat.c\
@@ -20,11 +37,13 @@ SRCS = ft_memset.c\
 	ft_strrchr.c\
 	ft_strstr.c\
 	ft_strnstr.c\
+	ft_str_starts_with.c\
 	ft_strcmp.c\
 	ft_strncmp.c\
 	ft_atoi.c\
 	ft_strtrim.c\
 	ft_strsplit.c\
+	ft_strsplit_escape.c\
 	ft_isalpha.c\
 	ft_isdigit.c\
 	ft_isalnum.c\
@@ -36,6 +55,7 @@ SRCS = ft_memset.c\
 	ft_memdel.c\
 	ft_strnew.c\
 	ft_strdel.c\
+	ft_strvdel.c\
 	ft_strclr.c\
 	ft_striter.c\
 	ft_striteri.c\
@@ -62,11 +82,18 @@ SRCS = ft_memset.c\
 	ft_lstmap.c\
 	ft_strcjoin.c\
 	ft_strvjoin.c\
+	get_next_line.c\
+	ft_putstrv.c\
+	ft_strv_len.c\
+	ft_strv_add.c\
+	ft_strv_dup.c\
+	ft_strv_remove.c\
+)
 
 OBJS = $(SRCS:.c=.o)
 
 %.o: %.c
-	gcc $(FLAGS) -c $< -o $@
+	gcc -I$(INCLUDEDIR) $(FLAGS) -c $< -o $@
 
 $(NAME): $(OBJS)
 	ar rcs $(NAME) $(OBJS)
