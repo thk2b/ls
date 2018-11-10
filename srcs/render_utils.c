@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 18:26:48 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/09 22:42:01 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/09 23:22:13 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,28 +37,40 @@ static char	get_file_type(mode_t m)
 	return ('-');
 }
 
-char	*perms(mode_t m)
+static void	set_stk(char *stk, mode_t m)
 {
-	char *s;
-	char type;
+	if (m & S_ISUID)
+		stk[0] = 'S';
+	if (m & S_ISGID)
+		stk[1] = 'S';
+	if (m & S_ISVTX)
+		stk[2] = 'T';
+}
+
+char		*perms(mode_t m)
+{
+	char	*s;
+	char	type;
+	char	stk[3] = {'-', '-', '-'};
 
 	type = get_file_type(m);
+	set_stk(stk, m);
 	MCK(ft_asprintf(&s, "%c%c%c%c%c%c%c%c%c%c",
 		type,
 		m & S_IRUSR ? 'r' : '-',
 		m & S_IWUSR ? 'w' : '-',
-		m & S_IXUSR ? 'x' : '-',
+		m & S_IXUSR ? 'x' : stk[0],
 		m & S_IRGRP ? 'r' : '-',
 		m & S_IWGRP ? 'w' : '-',
-		m & S_IXGRP ? 'x' : '-',
+		m & S_IXGRP ? 'x' : stk[1],
 		m & S_IROTH ? 'r' : '-',
 		m & S_IWOTH ? 'w' : '-',
-		m & S_IXOTH ? 'x' : '-'), NULL);
+		m & S_IXOTH ? 'x' : stk[2]), NULL);
 	s[10] = '\0';
 	return (s);
 }
 
-char	*user(uid_t i)
+char		*user(uid_t i)
 {
 	struct passwd *p;
 
@@ -70,7 +82,7 @@ char	*user(uid_t i)
 	return (p->pw_name);
 }
 
-char	*group(gid_t i)
+char		*group(gid_t i)
 {
 	struct group *g;
 
@@ -82,7 +94,7 @@ char	*group(gid_t i)
 	return (g->gr_name);
 }
 
-char	*get_time(time_t *t)
+char		*get_time(time_t *t)
 {
 	char *s;
 
@@ -91,7 +103,7 @@ char	*get_time(time_t *t)
 	return (s);
 }
 
-char	*get_link(t_file *file, struct stat *st)
+char		*get_link(t_file *file, struct stat *st)
 {
 	char	*s;
 	char	name[PATH_MAX] = {0};
