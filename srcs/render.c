@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 14:53:06 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/10 00:24:21 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/10 00:25:24 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ static int	pre_render_file(char **s, t_file *file,
 	return (0);
 }
 
-static int	pre_render_device(char **s, t_file *file, struct
-	stat *statbuf, char *perms)
+static int	pre_render_device(char **s, t_file *file,
+	struct stat *statbuf, char *perms)
 {
 	char	*link;
 	char	*mj;

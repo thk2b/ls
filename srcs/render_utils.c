@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 18:26:48 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/10 00:19:42 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/10 00:27:32 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,19 +42,16 @@ static char	get_file_type(mode_t m)
 
 static void	set_stk(char *stk, mode_t m)
 {
-	if (m & S_ISUID)
-		stk[0] = 'S';
-	if (m & S_ISGID)
-		stk[1] = 'S';
-	if (m & S_ISVTX)
-		stk[2] = 'T';
+	stk[0] = m & S_ISUID ? 'S' : '-';
+	stk[1] = m & S_ISGID ? 'S' : '-';
+	stk[2] = m & S_ISVTX ? 'T' : '-';
 }
 
 char		*perms(mode_t m)
 {
 	char	*s;
 	char	type;
-	char	stk[3] = {'-', '-', '-'};
+	char	stk[3];
 
 	type = get_file_type(m);
 	set_stk(stk, m);
@@ -109,8 +106,9 @@ char		*get_time(time_t *t)
 char		*get_link(t_file *file, struct stat *st)
 {
 	char	*s;
-	char	name[PATH_MAX] = {0};
+	char	name[PATH_MAX];
 
+	ft_bzero(name, PATH_MAX);
 	s = NULL;
 	if (!S_ISLNK(st->st_mode))
 		return (ft_strdup(""));

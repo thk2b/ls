@@ -6,12 +6,12 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/15 15:01:33 by tkobb             #+#    #+#             */
-/*   Updated: 2018/09/17 17:21:01 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/10 00:29:53 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "b_ls.h"
-#include "opts.h"
+#include <ls.h>
+#include <opts.h>
 #include <stdlib.h>
 
 static struct s_opts	*opts_new(void)
@@ -36,7 +36,7 @@ struct s_opts			*get_opts(int ac, const char **av)
 	size_t			flagi;
 
 	if ((opts = opts_new()) == NULL)
-		error("b_ls");
+		error("ft_ls");
 	flagi = 1;
 	while (av[flagi] && av[flagi][0] == '-')
 	{

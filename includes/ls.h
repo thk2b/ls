@@ -6,12 +6,12 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 11:18:53 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/09 22:09:51 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/10 00:31:26 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef B_LS_H
-# define B_LS_H
+#ifndef LS_H
+# define LS_H
 # include "opts.h"
 # include "btree.h"
 
