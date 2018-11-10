@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 18:26:48 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/09 21:59:05 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/09 22:07:02 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ char	*get_time(time_t *t)
 char	*get_link(t_file *file, struct stat *st)
 {
 	char	*s;
-	char	name[PATH_MAX];
+	char	name[PATH_MAX] = {0};
 
 	s = NULL;
 	if (!S_ISLNK(st->st_mode))
