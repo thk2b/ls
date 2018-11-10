@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 11:34:37 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/09 20:53:26 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/09 23:36:09 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ t_file		*get_file(t_opts *opts, char *name, char *path)
 
 	if ((file = (t_file*)malloc(sizeof(t_file))) == NULL)
 		return (NULL);
-	if (lstat(path, &buf) == -1)
+	if (opts->show_long ? lstat(path, &buf) : stat(path, &buf) == -1)
 	{
 		error(path);
 		return (NULL);
