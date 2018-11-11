@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 14:53:06 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/10 21:55:36 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/10 22:40:38 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	pre_render_file(t_opts *opts, char **s, t_file *file,
 {
 	char	*link;
 	char	*p;
-	
+
 	p = perms(statbuf->st_mode);
 	link = get_link(file, statbuf);
 	MCK(ft_asprintf(s, "%s  %d %s  %s %lld %.*s %s%s",
@@ -43,7 +43,7 @@ static int	pre_render_device(t_opts *opts, char **s, t_file *file,
 	char	*link;
 	char	*mj;
 	char	*p;
-	
+
 	p = perms(statbuf->st_mode);
 	mj = maj_min(statbuf->st_rdev);
 	link = get_link(file, statbuf);
@@ -59,7 +59,8 @@ static int	pre_render_device(t_opts *opts, char **s, t_file *file,
 	return (0);
 }
 
-char		*pre_render_file_long(t_opts *opts, t_file *file, struct stat *statbuf)
+char		*pre_render_file_long(t_opts *opts, t_file *file,
+	struct stat *statbuf)
 {
 	char	*s;
 	mode_t	m;

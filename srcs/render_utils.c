@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/25 18:26:48 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/10 22:32:39 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/10 22:40:52 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ static char	get_file_type(mode_t m)
 static void	set_stk(char *stk, mode_t m)
 {
 	char	upcase;
-	
+
 	upcase = m & S_IXUSR ? 0 : 'A' - 'a';
 	stk[0] = m & S_ISUID ? upcase + 's' : '-';
 	stk[1] = m & S_ISGID ? upcase + 's' : '-';
