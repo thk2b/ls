@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 11:25:19 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/10 00:42:07 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/10 21:48:51 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_opts		*opts_new(void)
 	opts->recursive = 0;
 	opts->show_all = 0;
 	opts->show_dir_header = 0;
+	opts->full_time = 0;
 	return (opts);
 }
 

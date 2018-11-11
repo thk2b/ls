@@ -6,7 +6,7 @@
 /*   By: tkobb <tkobb@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/09/23 11:34:37 by tkobb             #+#    #+#             */
-/*   Updated: 2018/11/10 00:48:24 by tkobb            ###   ########.fr       */
+/*   Updated: 2018/11/10 21:47:03 by tkobb            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_file		*get_file(t_opts *opts, char *name, char *path)
 	file->is_dir = S_ISDIR(buf.st_mode);
 	file->blocks = buf.st_blocks;
 	if (opts->show_long)
-		file->repr = pre_render_file_long(file, &buf);
+		file->repr = pre_render_file_long(opts, file, &buf);
 	else
 		file->repr = file->name;
 	return (file);
